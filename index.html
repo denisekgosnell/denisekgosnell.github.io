@@ -100,14 +100,12 @@ class: slide
 # Graphs vs Tables
 
 ### First Half: 12:50 - 1:35 (ish)
-#### Intro to the debate
-#### Similarity from graph traversals
+#### Graph DBs, Analysis, Viz
 #### Demo
 
 ### Second Half: 1:45 - 2:30 (ish)
-#### Similarity from tables
+#### Relational DBs to Matrices, Analysis, Viz
 #### Demo
-#### Discussion
 ---
 
 class: center,middle
@@ -251,6 +249,36 @@ class: center, middle
 class: center, middle
 
 ### Enter graphs.
+
+---
+
+background-image: url(top_grossing_referral_physicians_small.jpeg
+
+#### Top Grossing Physicians from Medicare Reimbursements
+
+---
+
+class: center, top
+
+# So yesterday, this happened
+
+.center[<img src="1Bfraud.png" class="small-img" alt="Graph DB Schema">]
+
+#### [From the Miami Herald](http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html)
+
+---
+
+class: left, middle
+
+# Graph DB Infrastructure
+
+--
+
+class: left, middle
+
+1. API event streaming with Kafka
+2. Persistence to Titan 0.5.3 backed by Cassandra
+3. OLAP graph traversals
 
 ---
 
@@ -494,17 +522,83 @@ class: center, middle
 
 ---
 
+class: left, top
+
+# Where to go from here?
+
+### Docker container with full example: PokitDok's gremlin-python lib on GitHub
+### Our Custom build of Titan: also on git
+### Our blog for more on graph load testing and visualizations: fullmetalhealth.com
+
+---
+
+class: left, top
+
+# The Brass Tax about Graphs
+### Architecture and Implementation:
+Modeling relationships within data for extracting useful information
+is well documented; but implementation is different issue.
+
+
+--
+
+class: left, top
+
+### DB Maturity:
+We've had ups and downs with just about every vendor out there.
+
+
+--
+
+class: left, top
+
+
+### Visualizations:
+D3 and Gephi get you covered with everything you need.
+
+---
+
+class: center,middle
+
+# Graphs vs Tables:
+# Ready? Fight.
+### Part 2
+#### Denise Gosnell, PhD
+#### Data Scientist, PokitDok
+
+---
+
+background-image: url(top_grossing_referral_physicians_small.jpeg)
+
+### Part 1 Was:
+---
+
 class: center, middle
 
 #Problem 2:
 
-### How do we identify similar entities within our data?
+### How do we use the verbose features of healthcare transactions to infer similarity?
 
 --
 
 class: center, middle
 
 ### Enter Tables.
+
+---
+
+class: left, middle
+
+# Relational DB Infrastructure
+
+--
+
+class: left, middle
+
+1. API event streaming with Kafka
+2. Persistence to SQL DB
+3. Batch processing for R&D
+4. Spark streaming for production models
 
 ---
 
@@ -652,10 +746,11 @@ def jsonl_to_binary_matrix(input_file):
 ### You want to do some reductions?
 ####            PCA, SVD, NMF ... go crazy.
 
-### You say similarity? Ready for that too.
-####            Entity Co-occurence, K-means clustering, LDA
-
 --
+
+### You say similarity? Ready for that too.
+####            Entity Co-occurence, K-means clustering, LDA ...
+
 ```
 
 
@@ -709,6 +804,35 @@ class: center, middle
 # Visualizing Clusters
 
 .center[<img src="CirclePacking.png" class="big-img" alt="Graph Similarity">]
+
+---
+
+class: left, top
+
+# Where to go from here?
+
+### For these slides, code, and notebooks: DeniseKGosnell on GitHub/Twitter
+### Our blog for more on Kafka, load testing and infrastructure discussions: fullmetalhealth.com
+
+---
+
+class: left, top
+
+# The Brass Tax about Tables
+### Architecture and Implementation:
+Very well documented; your problem has probably already been solved.
+
+--
+
+
+### DB Maturity:
+Well documented, but scalability is relative.
+
+
+--
+
+### Visualizations:
+Looking at a table tells you nothing. (pretty much)
 
 ---
 
@@ -771,11 +895,6 @@ background-image: url(SimilarTradingPartners.png)
 ### Graphs: Similarity
 
 ---
-class: center, middle
-
-# graph = table
-
----
 
 class: center,middle
 
@@ -785,7 +904,7 @@ class: center,middle
 #### Denise Gosnell, PhD
 #### Data Scientist, PokitDok
 
-
+---
 
 
    </textarea>
