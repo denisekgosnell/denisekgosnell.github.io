@@ -27,15 +27,17 @@
 <div class="reveal">
     <div class="slides">
         <img src="pd-logo.png" class="pd-logo">
+
         <section  data-markdown data-separator="---" style="text-align: center;" >
             <script type="text/template">
                 ## Solving Healthcare’s Dirtiest Data Problems
-                ### and I Might Mention Blockchain. . .
+                ### and I Might Mention Blockchain.
                 <br><br>
                 #### Denise Gosnell, PhD
                 #### Sr. Technical Evangelist, PokitDok
             </script>
         </section>
+
         <section  data-markdown data-separator="--" data-transition="none" >
             <script type="text/template">
                 ### /about/pokitdok
@@ -44,18 +46,67 @@
                 <br>
                 --
                 ### /about/pokitdok
+
                 <br>
                 <br>
+
                 ### The API Platform For The Business Of Health
 
                 --
+                ## Health?
 
-                ### Obligatory map of API usage
-
-                <img src="USATransactions.png" class="big-img" alt="Snapshot of PD API Usage">
+                --
+                ## #1
 
                 --
 
+                Medical bills are the primary cause of personal bankruptcy in the U.S.
+
+                --
+                ## $12,900
+                --
+                Average out of pocket spend before insurance starts paying, for families on HDHPs
+                --
+                ## $42.8 billion
+                --
+                National uncompensated care costs
+                <br>
+                (charity care + bad debt), 2014
+            </script>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
+        </section>
+
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <img src="1Bfraud.png" class="small-img">
+            <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none" >
+            <script type="text/template">
+                ## Healthcare has changed
+                --
+                <img src="marketplace.png" alt="pd marketplace">
+
+                --
+                <img src="tc.png" class="big-img" alt="apple 2+">
+
+                #### [Source: "What’s Really Killing Digital Health Startups"](http://techcrunch.com/2015/10/30/whats-really-killing-digital-health-startups/)<br> 10/30/2015 by John Sung Kim (@JohnSungKim)
+
+                --
+                ## The core == insurance companies (payers)
+
+                <ul>
+                    <li>Eligibility (coverage, plan structure, deductibles)</li>
+                    <li>Claims and claims status</li>
+                    <li>Enrollment</li>
+                    <li>Authorizations</li>
+                    <li>Referrals</li>
+                </ul>
+
+                #### ... AKA ASC X12 5010.
+
+                --
                 ### X12 Eligibility request
 
                 ```html
@@ -139,493 +190,32 @@
                 }
                 ```
                 --
-                ### Enter the data storage debate:
-                <br>
-                ### relational? graph? document store...?
-                --
-                ## Model 1:
-                <br>
-                ### How do we identify and **recommend similar**
-                ### doctors within our data?
-                <br>
-                <br>
-                --
-                ## Model 1:
-                <br>
-                ## Enter graphs.
-                <br>
-                <br>
-                <br>
+                ### Acredited Standards Committee (ASC) started work in 1979.
 
+                --
+                ### Other hot tech from 1979
+
+                <img src="apple2plus.jpg" class="big-img" alt="apple 2+">
+
+                --
+                ### APIs > legacy &ldquo;standards&rdquo;
+
+                --
 
             </script>
         </section>
-        <section data-background="top_grossing_referral_physicians_small.jpeg">
-            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
-        </section>
-        <section data-background="top_grossing_referral_physicians_small.jpeg">
-            <img src="1Bfraud.png" class="small-img">
-            <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
-        </section>
-        <section  data-markdown data-separator="--" >
-            <script type="text/template">
-                ## Graph DB Infrastructure
-                <br>
-                1. API event streaming with Kafka
-                2. Persistence to Titan 0.5.3 backed by Cassandra
-                3. OLAP graph traversals
-                <br>
-                <br>
-            </script>
-        </section>
-        <section data-background-image="providers_100k_v1_small.jpeg" data-background-size="1100px" data-background-color="#2D2E30">
-            <h4 style="text-align: left; padding: 0.0em 0.0em 25.0em 0.0em;">Top Providers</h4>
-        </section>
-        <section  data-markdown data-separator="--" data-transition="none">
-            <script type="text/template">
-                ## Problem 1:
+Notes --
+        What is next --
+        -- what is an API?
+        -- what problems do they solve?
 
-                ### How do we identify and recommend similar doctors within our data?
+        What is a blockchain
+        -- what problems do they solve?
 
-                --
-                ## Sub Problem:
-
-                ### How do we identify similar doctors?
-
-                --
-                ## Graph Schema
-
-                <img src="HealthGraph.png" class="big-img" alt="Graph Schema">
-                --
-                ## Triangular Closure
-
-                <img src="RecommendDoc.png" class="med-img" alt="Graph Similarity">
-
-                --
-                ## Triangular Closure
-
-                <img src="probabilisticPaths.png" class="med-img" alt="Graph Similarity">
-
-                --
-                ## Triangular Closure
-
-                <img src="probabilisticPaths.png" class="med-img" alt="Triangular Closure">
-                <br>
-                $$pr( E(v_p|v_s) ) = \frac{|P(v_p, v_t, v_s)|}{|E(v_t, v_s)|}$$
-
-                --
-                ## Bipartite graph traversal
-
-                <img src="bipartieGraphSim_1.png" class="big-img" alt="Graph Similarity">
-                <br>
-                <br>
-                <br>
-
-                --
-                ## Bipartite graph traversal
-
-                <img src="doc_sim_0.png" class="med-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id", id)
-
-                ```
-                <br>
-                --
-                ## Bipartite graph traversal
-
-                <img src="doc_sim1_5.png" class="med-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id", id).in()
-                ```
-                <br>
-                --
-                ## Bipartite graph traversal
-
-                <img src="doc_sim2png.png" class="med-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id", id).in().out()
-                ```
-                <br>
-                --
-                ## Bipartite graph traversal
-
-                <img src="doc_sim2png.png" class="med-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id", id).in().out().filter{it.id != id}
-                ```
-                <br>
-                --
-                ## Bipartite graph traversal
-
-                <img src="doc_sim3.png" class="med-img" alt="Graph Similarity">
-
-                ```groovy
-                g.V.has("id", id).in().out().filter{it.id !=id}.groupCount(m)
-                ```
-                <br>
-                --
-                ## Bipartite graph traversal
-
-                <img src="doc_sim3.png" class="med-img" alt="Graph Similarity">
-
-                ```groovy
-                g.V.has("id", id).in().out().filter{it.id !=id}.groupCount(m)
-                sort{a,b -> b.value <=> a.value}[0..10]
-                ```
-                <br>
-                --
-                ## Sub Problem:
-
-                ### How do we recommend
-                ### similar doctors within our data?
-
-                --
-                ## OLAP for recommendation
-
-                <img src="bipartieGraphSim_1.png" class="med-small-img" alt="Graph Similarity">
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                --
-                ## OLAP for recommendation
-                <img src="bipartieGraphSim_2.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                ```
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                --
-                ## OLAP for recommendation
-
-                <img src="bipartieGraphSim_3.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                   .in("scheduled_with").filter{it.id != id}
-                ```
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                --
-                ## OLAP for recommendation
-
-                <img src="bipartieGraphSim_4.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                   .in("scheduled_with").filter{it.id != id}
-                ```
-                <br>
-                <br>
-                <br>
-                <br>
-                --
-                ## OLAP for recommendation
-
-                <img src="bipartieGraphSim_5.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                   .in("scheduled_with").filter{it.id != id}
-                   .out("viewed")
-                ```
-                <br>
-                <br>
-                <br>
-                --
-                ## OLAP for recommendation
-
-                <img src="bipartieGraphSim_6.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                   .in("scheduled_with").filter{it.id != id}
-                   .out("viewed")
-                   .groupCount(m)
-                ```
-                <br>
-                <br>
-                --
-                ## OLAP for recommendation
-
-                <img src="bipartieGraphSim_7.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                   .in("scheduled_with").filter{it.id != id}
-                   .out("viewed")
-                   .groupCount(m)
-                sort{a,b -> b.value <=> a.value}[0..2]
-                ```
-                <br>
-                --
-                ## Where to go from here?
-                <br>
-                1. Docker container with full example:
-                [gremlin-python on GitHub](https://github.com/pokitdok/gremlin-python)
-                2. Our [Custom build of Titan](https://github.com/pokitdok/titan/tree/0.5.3-hadoop2.6.0)
-                3. Our blog for more on [graph load testing](https://fullmetalhealth.com/titan-load-statistics/) and [visualizations](https://fullmetalhealth.com/tag/data-science/): [Full Metal Health](https://fullmetalhealth.com/)
-                <br>
-                <br>
-                --
-                ## The Brass Tax about Graphs
-                <br>
-                1. Architecture and Implementation: depends...
-                2. DB Maturity: DNE one db to rule them all
-                3. Visualizations:  D3 and Gephi got you covered
-                <br>
-                <br>
-
-                --
-                ## Problem 2:
-
-                ### How do we group similar
-                ### transactions of healthcare data?
-                <br>
-                --
-                ## Problem 2:
-
-                ### How do we group similar
-                ### transactions of healthcare data?
-                ### Enter Tables.
-
-                --
-                ## Relational DB Infrastructure
-
-                1. API event streaming with Kafka
-                2. Persistence to mySQL DB
-                3. Batch processing for R&D
-                4. Spark streaming for production models
-
-                --
-                ## Our Eligibility response
-
-                ```javascript
-                {
-                  "coverage": [
-                    "coinsurance": [
-                      {
-                        "benefit_percent": 0.2,
-                        "service_types": [
-                          "chiropractic"
-                        ]
-                      }
-                    ],
-                    "copay": {
-                      "copayment": {
-                        "amount": "10",
-                        "currency": "USD"
-                      },
-                      "service_types": [
-                        "professional_physician_visit_office"
-                      ]
-                    }
-                  ],
-                  "plan_begin_date": "2014-10-01",
-
-                  (...and so on...)
-                }
-                ```
-                --
-                ## Our Eligibility response
-
-                ### JSON to tables?
-
-                ```
-                         |  member_id  |  npi  |     date     |  coverage_amount | ...
-                event_1  |     abc     |  123  |  2016 01 01  |       100        | ...
-                event_2  |     def     |  123  |  2016 01 01  |        75        | ...
-                event_3  |     abc     |  456  |  2016 01 02  |       100        | ...
-                event_4  |     def     |  456  |  2016 01 02  |        75        | ...
-                event_5  |     abc     |  789  |  2016 01 03  |       300        | ...
-                event_6  |     def     |  789  |  2016 01 03  |       200        | ...
-                  ...          ...        ...        ...              ...          ...
-                event_n  |     abc     |  123  |  2016 01 08  |       100        | ...
-
-                ```
-                --
-                ## Relational Schema
-                <br>
-                * Transaction table
-                * Application table
-                * Api table
-                * Users table
-                * Oh! wait! we need to analyze valid/invalid insurance companies within the transactions!
-                        ... add a table
-
-                --
-                ## Relational Schema:
-                <br>
-                * Good: developer time to stand all of this up
-                * Bad: needing to adjust relational schema
-                * The Ugly: The Join.
-                <br>
-                <br>
-                <br>
-                --
-                ## What we really want: matrices
-
-                --
-                ### JSON to matrix
-                <br>
-                ```
-                         |  member_id.abc  |  member_id.def  |  npi.123  |  npi.456  |  npi.789 | ...
-                event_1  |        1        |        0        |     1     |     0     |     0    | ...
-                event_2  |        0        |        1        |     1     |     0     |     0    | ...
-                event_3  |        1        |        0        |     0     |     1     |     0    | ...
-                event_4  |        0        |        1        |     0     |     1     |     0    | ...
-                event_5  |        1        |        0        |     0     |     0     |     1    | ...
-                event_6  |        0        |        1        |     0     |     0     |     1    | ...
-                  ...            ...               ...            ...         ...         ...
-                event_n  |        1        |        0        |     1     |     0     |     0    | ...
-
-                ```
-                <br>
-                #### column headers represent the document grammer
-
-                --
-                ## JSON to Matrix
-
-                ```python
-                from sklearn.feature_extraction import DictVectorizer
-                import json
-
-                def jsonl_to_binary_matrix(input_file):
-                    data = []
-                    with open(file_name, 'r') as read_file:
-                        for line in read_file:
-                            line_data = json.loads(line)
-                            file_grammar = get_grammar(line_data, [], IGNORE_KEYS)
-                            file_dict = {key: 1 for key in file_grammar}
-                            data.append(file_dict)
-                    vector_maker = DictVectorizer(dtype=np.float32)
-                    data = vector_maker.fit_transform(data)
-                ```
-                #### [get the code for this here](https://github.com/denisekgosnell/slide-decks/blob/master/data-day-seattle/index.html#L699)
-                --
-
-                ## From matrix to  ...
-                * You want to do some reductions?
-                ####            PCA, SVD, NMF ...
-                * You want to do some similarity models?
-                ####            co-occurance, kmeans, LDA ...
-                <br>
-                ####          go crazy.
-
-                --
-                ## Co-occurrence Analysis
-                <img src="Co-Occurance.jpg" class="big-img" alt="Graph Similarity">
-
-                --
-                ## Co-occurrence Analysis
-                <img src="Co-Occurance.jpg" class="small-img" alt="Co-Occurance Similarity">
-
-                ```python
-                import numpy as np
-                import seaborn as sns
-                import pandas as pd
-
-                co_occurance_matrix = np.dot(data, data.transpose())
-                co_occurance_df = pd.DataFrame(data=co_occurance[0:,0:])
-                sns.set()
-                sns.heatmap(co_occurance_df, annot=True, fmt="d", linewidths=.5)
-                ```
-                <br>
-
-                --
-                ## Where to go from here?
-                <br>
-                1. For these slides, code, and notebooks: DeniseKGosnell on GitHub/Twitter
-                2. Our blog for [more on Kafka, load testing, and infrastructure discussions](https://fullmetalhealth.com/tag/spark/)
-                <br>
-                <br>
-
-                --
-                ## The Brass Tax about Tables
-                <br>
-                1. Architecture and Implementation: your problem has probably already been solved.
-                2. DB Maturity: can we say solved here? ... but scalability is relative.
-                3. Visualizations: Plenty of tools to choose from
-
-                --
-
-                ## Graphs v. Tables
-                <br>
-                ### did we decide anything?
-                <br>
-                <br>
-                <br>
-                <br>
-
-                --
-
-                ## Graphs v. Tables
-                <br>
-                * What problem are you trying to solve?
-                * Does it need a database?
-                * Scalability? Run Time? Dev Time?
-                * Relationships vs properties?
-                <br>
-                <br>
-                --
-                ## Graphs: great for relationships
-
-                <img src="bipartieGraphSim_7.png" class="med-small-img" alt="Graph Similarity">
-
-                ```python
-                g.V.has("id",id).out("viewed")
-                   .in("scheduled_with").filter{it.id != id}
-                   .out("viewed")
-                   .groupCount(m)
-                sort{a,b -> b.value <=> a.value}[0..2]
-                ```
-
-                --
-                ## Tables: use all the features
-                <img src="Co-Occurance.jpg" class="small-img" alt="Graph Similarity">
-
-                ```python
-                import numpy as np
-                import seaborn as sns
-                import pandas as pd
-
-                co_occurance_matrix = np.dot(data, data.transpose())
-                co_occurance_df = pd.DataFrame(data=co_occurance[0:,0:])
-                sns.set()
-                sns.heatmap(co_occurance_df, annot=True, fmt="d", linewidths=.5)
-                ```
-                <br>
-
-            </script>
-        </section>
         <section  data-markdown data-separator="---" data-separator-vertical="--" style="text-align: center;" >
             <script type="text/template">
-                <img src="Co-Occurance.jpg" class="big-img" alt="Graph Similarity">
-                ## Tables: Similarity
-            </script>
-        </section>
-        <section data-background-image="SimilarTradingPartners.png" data-background-size="1000px" data-background-color="#000000">
-            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Graphs: Similarity</h3>
-        </section>
-        <section  data-markdown data-separator="---" data-separator-vertical="--" style="text-align: center;" >
-            <script type="text/template">
-                ## Graphs vs Tables: Ready? Fight.
-                ### Lessons learned from building models in both graph and relational dbs
+                ## Solving Healthcare’s Dirtiest Data Problems
+                ### and I Might Mention Blockchain.
                 <br><br>
                 #### Denise Gosnell, PhD
                 #### Sr. Technical Evangelist, PokitDok
