@@ -1,0 +1,668 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>GraphsVsTables</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <style>
+
+    </style>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <img src="pd-logo.png" class="pd-logo">
+        <section  data-markdown data-separator="---" style="text-align: center;" >
+            <script type="text/template">
+                ## Graphs vs Tables: Ready? Fight.
+                ### Lessons learned from building models from both graph and relational databases
+                <br><br>
+                #### Denise Gosnell, PhD
+                #### Sr. Technical Evangelist, PokitDok
+            </script>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none" >
+            <script type="text/template">
+                ### /about/pokitdok
+                <br>
+                <br>
+                <br>
+                --
+                ### /about/pokitdok
+                <br>
+                <br>
+                ### The API Platform For The Business Of Health
+
+                --
+
+                ### Obligatory map of API usage
+
+                <img src="USATransactions.png" class="big-img" alt="Snapshot of PD API Usage">
+
+                --
+
+                ### X12 Eligibility request
+
+                ```html
+                HL*1**20*1~NM1*PR*2*Premium Gold Insurance Co.****
+                *PI*0123456~HL*2*1*21*1~NM1*1P*1*Back*Has*Your***X
+                X*9876543210~HL*3*2*22*0~TRN*1*89368DC6A14E4E529AA
+                876ED416E8A9F*1453915417~NM1*IL*1*A-lot*Lifts****M
+                I*MEM10001~DMG*D8*19820315*M~EQ*98^33~
+                ```
+                <br>
+                ##### (the spec for this one request is 552 pages)
+
+                --
+
+                ### Our Eligibility request
+
+                ```javascript
+                {
+                  "member": {
+                  "birth_date": "1982-03-15",
+                  "first_name": "Lifts",
+                  "last_name": "A-Lot",
+                  "id": "MEM10001"
+                },
+                  "provider": {
+                    "first_name": "Has-Your",
+                    "last_name": "Back",
+                    "npi": "9876543210"
+                },
+                  "service_types": [
+                    "professional_physician_visit_office",
+                    "chiropractic"],
+                  "trading_partner_id": "premium_gold_insurance"
+                }
+                ```
+
+                --
+
+                ### X12 Eligibility response
+
+                ```html
+                HL*1**20*1~NM1*PR*2*Premium Gold Insurance Co.****
+                *PI*0123456~HL*2*1*21*1~NM1*1P*1*Back*Has*Your***X
+                X*9876543210~HL*3*2*22*0~TRN*2*89368DC6A14E4E529AA
+                876ED416E8A9F*1453915417NM1*IL*1*A-lot*Lifts****MI
+                *MEM10001~N3*2150 Pleasant Drive~N4*Sunny*CA*90001
+                0001~DMG*D8*19820315*M~DTP*291*D8*20141001~EB*B**9
+                8****10~EB*A**33*****.20~
+                ```
+                <br>
+                #### oh God make it stop
+
+                --
+
+                ### Our Eligibility response
+
+                ```javascript
+                {
+                  "coverage": [
+                    "coinsurance": [
+                      {
+                        "benefit_percent": 0.2,
+                        "service_types": [
+                          "chiropractic"
+                        ]
+                      }
+                    ],
+                    "copay": {
+                      "copayment": {
+                        "amount": "10",
+                        "currency": "USD"
+                      },
+                    "service_types": [
+                      "professional_physician_visit_office"
+                    ]
+                  }
+                ],
+                  "plan_begin_date": "2014-10-01",
+
+                (...and so on...)
+                }
+                ```
+                --
+                ### Enter the data storage debate:
+                <br>
+                ### relational? graph? document store...?
+                --
+                ## Model 1:
+                <br>
+                ### How do we identify and **recommend similar**
+                ### doctors within our data?
+                <br>
+                <br>
+                --
+                ## Model 1:
+                <br>
+                ## Enter graphs.
+                <br>
+                <br>
+                <br>
+
+
+            </script>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <img src="1Bfraud.png" class="small-img">
+            <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none">
+            <script type="text/template">
+                ## Graph DB Infrastructure
+                <br>
+                1. API event streaming with Kafka
+                2. Persistence to Titan 0.5.3 backed by Cassandra
+                3. OLAP graph traversals
+                <br>
+                <br>
+                --
+                ## Graph Schema
+
+                <img src="HealthGraph.png" class="big-img" alt="Graph Schema">
+                --
+                ## Problem 1:
+
+                ### How do we identify and recommend similar doctors within our data?
+
+                --
+                ## Sub Problem:
+
+                ### How do we identify similar doctors?
+                --
+                ## Bipartite graph traversal
+
+                <img src="bipartieGraphSim_1.png" class="big-img" alt="Graph Similarity">
+                <br>
+                <br>
+                <br>
+
+                --
+                ## Bipartite graph traversal
+
+                <img src="doc_sim_0.png" class="med-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id", id)
+
+                ```
+                <br>
+                --
+                ## Bipartite graph traversal
+
+                <img src="doc_sim1_5.png" class="med-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id", id).in()
+                ```
+                <br>
+                --
+                ## Bipartite graph traversal
+
+                <img src="doc_sim2png.png" class="med-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id", id).in().out()
+                ```
+                <br>
+                --
+                ## Bipartite graph traversal
+
+                <img src="doc_sim2png.png" class="med-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id", id).in().out().filter{it.id != id}
+                ```
+                <br>
+                --
+                ## Bipartite graph traversal
+
+                <img src="doc_sim3.png" class="med-img" alt="Graph Similarity">
+
+                ```groovy
+                g.V.has("id", id).in().out().filter{it.id !=id}.groupCount(m)
+                ```
+                <br>
+                --
+                ## Bipartite graph traversal
+
+                <img src="doc_sim3.png" class="med-img" alt="Graph Similarity">
+
+                ```groovy
+                g.V.has("id", id).in().out().filter{it.id !=id}.groupCount(m)
+                sort{a,b -> b.value <=> a.value}[0..10]
+                ```
+                <br>
+                --
+                ## Sub Problem:
+
+                ### How do we recommend
+                ### similar doctors within our data?
+
+                --
+                ## OLAP for recommendation
+
+                <img src="bipartieGraphSim_1.png" class="med-small-img" alt="Graph Similarity">
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                --
+                ## OLAP for recommendation
+                <img src="bipartieGraphSim_2.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                ```
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                --
+                ## OLAP for recommendation
+
+                <img src="bipartieGraphSim_3.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                   .in("scheduled_with").filter{it.id != id}
+                ```
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                --
+                ## OLAP for recommendation
+
+                <img src="bipartieGraphSim_4.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                   .in("scheduled_with").filter{it.id != id}
+                ```
+                <br>
+                <br>
+                <br>
+                <br>
+                --
+                ## OLAP for recommendation
+
+                <img src="bipartieGraphSim_5.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                   .in("scheduled_with").filter{it.id != id}
+                   .out("viewed")
+                ```
+                <br>
+                <br>
+                <br>
+                --
+                ## OLAP for recommendation
+
+                <img src="bipartieGraphSim_6.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                   .in("scheduled_with").filter{it.id != id}
+                   .out("viewed")
+                   .groupCount(m)
+                ```
+                <br>
+                <br>
+                --
+                ## OLAP for recommendation
+
+                <img src="bipartieGraphSim_7.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                   .in("scheduled_with").filter{it.id != id}
+                   .out("viewed")
+                   .groupCount(m)
+                sort{a,b -> b.value <=> a.value}[0..2]
+                ```
+                <br>
+            </script>
+        </section>
+        <section data-background-image="providers_100k_v1_small.jpeg" data-background-size="1100px" data-background-color="#2D2E30">
+            <h4 style="text-align: left; padding: 0.0em 0.0em 25.0em 0.0em;">Top Providers</h4>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none">
+            <script type="text/template">
+                ## The Brass Tax about Graphs
+                <br>
+                1. Architecture and Implementation: depends...
+                2. DB Maturity: DNE one db to rule them all
+                3. Visualizations:  D3 and Gephi got you covered
+                <br>
+                <br>
+
+                --
+                ## Problem 2:
+
+                ### How do we group similar
+                ### transactions of healthcare data?
+                <br>
+                --
+                ## Problem 2:
+
+                ### How do we group similar
+                ### transactions of healthcare data?
+                ### Enter Tables.
+
+                --
+                ## Relational DB Infrastructure
+
+                1. API event streaming with Kafka
+                2. Persistence to mySQL DB
+                3. Batch processing for R&D
+                4. Spark streaming for production models
+
+                --
+                ## Our Eligibility response
+
+                ```javascript
+                {
+                  "coverage": [
+                    "coinsurance": [
+                      {
+                        "benefit_percent": 0.2,
+                        "service_types": [
+                          "chiropractic"
+                        ]
+                      }
+                    ],
+                    "copay": {
+                      "copayment": {
+                        "amount": "10",
+                        "currency": "USD"
+                      },
+                      "service_types": [
+                        "professional_physician_visit_office"
+                      ]
+                    }
+                  ],
+                  "plan_begin_date": "2014-10-01",
+
+                  (...and so on...)
+                }
+                ```
+                --
+                ## Our Eligibility response
+
+                ### JSON to tables?
+
+                ```
+                         |  member_id  |  npi  |     date     |  coverage_amount | ...
+                doc_1    |     abc     |  123  |  2016 01 01  |       100        | ...
+                doc_2    |     def     |  123  |  2016 01 01  |        75        | ...
+                doc_3    |     abc     |  456  |  2016 01 02  |       100        | ...
+                doc_4    |     def     |  456  |  2016 01 02  |        75        | ...
+                doc_5    |     abc     |  789  |  2016 01 03  |       300        | ...
+                doc_6    |     def     |  789  |  2016 01 03  |       200        | ...
+                  ...          ...        ...        ...              ...          ...
+                doc_n    |     abc     |  123  |  2016 01 08  |       100        | ...
+
+                ```
+                --
+                ## Relational Schema
+                <br>
+                * Transaction table
+                * Application table
+                * Api table
+                * ... seems pretty straightforward, right?
+                --
+                ## SQL Query
+                ```
+                SET @start = '2017-01-01 00:00:00';
+                SET @end = '2017-01-14 00:00:00';
+
+                SELECT  YEAR(activities.activity_date) as 'year',
+                        MONTH(activities.activity_date) as 'month',
+                        DAY(activities.activity_date) as 'day',
+                        HOUR(activities.activity_date) as 'hour',
+                        COUNT(*) as 'total'
+                FROM activities
+                WHERE activities.activity_date BETWEEN @start and @end
+                group by YEAR(activities.activity_date),
+                        MONTH(activities.activity_date),
+                        DAY(activities.activity_date),
+                        HOUR(activities.activity_date);
+
+                ```
+                --
+                ## Fast Dashes
+                <img src="transactions.png" class="big-img" alt="transaction dashboard">
+                --
+                ## Relational Schema
+                <br>
+                * Transaction table
+                * Application table
+                * Api table
+                * Users table
+                * Oh.. wait! we need to [insert useful thing to measure]
+                        ... add a table
+
+                --
+                ## Relational Schema:
+                <br>
+                * Good: developer time to stand all of this up
+                * Bad: needing to adjust relational schema
+                * The Ugly: The Join.
+                <br>
+                <br>
+                <br>
+                --
+                ### What we really want: matrices
+
+                --
+                ### JSON to matrix
+                <br>
+                ```
+                         |  member_id.abc  |  member_id.def  |  npi.123  |  npi.456  |  npi.789 | ...
+                doc_1    |        1        |        0        |     1     |     0     |     0    | ...
+                doc_2    |        0        |        1        |     1     |     0     |     0    | ...
+                doc_3    |        1        |        0        |     0     |     1     |     0    | ...
+                doc_4    |        0        |        1        |     0     |     1     |     0    | ...
+                doc_5    |        1        |        0        |     0     |     0     |     1    | ...
+                doc_6    |        0        |        1        |     0     |     0     |     1    | ...
+                  ...            ...               ...            ...         ...         ...
+                doc_n    |        1        |        0        |     1     |     0     |     0    | ...
+
+                ```
+                <br>
+                #### column headers represent the document grammer
+
+                --
+                ## JSON to Matrix
+
+                ```python
+                from sklearn.feature_extraction import DictVectorizer
+                import json
+
+                def jsonl_to_binary_matrix(input_file):
+                    data = []
+                    with open(file_name, 'r') as read_file:
+                        for line in read_file:
+                            line_data = json.loads(line)
+                            file_grammar = get_grammar(line_data, [], IGNORE_KEYS)
+                            file_dict = {key: 1 for key in file_grammar}
+                            data.append(file_dict)
+                    vector_maker = DictVectorizer(dtype=np.float32)
+                    data = vector_maker.fit_transform(data)
+                ```
+                #### [get the code for this here](https://github.com/denisekgosnell/slide-decks/blob/master/data-day-seattle/index.html#L699)
+                --
+
+                ## From matrix to  ...
+                * You want to do some reductions?
+                ####            PCA, SVD, NMF ...
+                * You want to do some similarity models?
+                ####            co-occurance, kmeans, LDA ...
+                <br>
+                ####          go crazy.
+
+                --
+                ## LDA
+
+                * Unsupervised machine learning for document topic discovey
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                --
+                ## LDA
+
+                * Unsupervised machine learning for document topic discovey
+                * Examples:
+                <br>  I like broccoli and bananas.
+                <br>  My sister adopted a hampster.
+                <br>  Look at this hampster munching on a banana.
+                --
+                ### Our Eligibility response to bag of words
+
+                ```javascript
+                {
+                  "coverage": [
+                    "coinsurance": [
+                      {
+                        "benefit_percent": 0.2,
+                        "service_types": [
+                          "chiropractic"
+                        ]
+                      },
+                      "service_types": [
+                        "professional_physician_visit_office"
+                      ]
+                  (...and so on...)
+                }
+                ```
+                coverage, coinsurance,
+                <br>chiropractic, professional_physician_visit_office, ...
+                <br>
+                <br>
+                --## Document Topics
+                <img src="topics.png" class="big-img" alt="LDA dashboard">
+                #### [The pyLDAvis library rocks](https://pyldavis.readthedocs.io/en/latest/)
+                --
+                ## The Brass Tax about Tables
+                <br>
+                1. Architecture and Implementation: your problem has probably already been solved.
+                2. DB Maturity: can we say solved here? ... but scalability is relative.
+                3. Visualizations: Plenty of tools to choose from
+
+                --
+
+                ## Graphs v. Tables
+                <br>
+                ### did we decide anything?
+                <br>
+                <br>
+                <br>
+                
+
+                --
+
+                ## Graphs v. Tables
+                <br>
+                * What problem are you trying to solve?
+                * Does it need a database?
+                * Scalability? Run Time? Dev Time?
+                * Relationships vs properties?
+                <br>
+                <br>
+                --
+                ## Graphs: great for relationships
+
+                <img src="bipartieGraphSim_7.png" class="med-small-img" alt="Graph Similarity">
+
+                ```python
+                g.V.has("id",id).out("viewed")
+                .in("scheduled_with").filter{it.id != id}
+                .out("viewed")
+                .groupCount(m)
+                sort{a,b -> b.value <=> a.value}[0..2]
+                ```
+            </script>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Graph Visualization</h3>
+        </section>
+        <section  data-markdown data-separator="--">
+            <script type="text/template">
+                ## Tables: mature tech
+                <img src="transactions.png" class="big-img" alt="transaction dashboard">
+                --
+                ## Matrices: verbose feature modeling
+                <img src="topics.png" class="big-img" alt="LDA Dashboard">
+                <br>
+                --
+                ## Where to go from here?
+                <br>
+                1. These slides: denisekgosnell.github.io
+                2. Docker container with full example:
+                [gremlin-python on GitHub](https://github.com/pokitdok/gremlin-python)
+                3. Our [Full Metal Health](https://fullmetalhealth.com/) blog for more on
+                <br>[* Graph load testing](https://fullmetalhealth.com/titan-load-statistics/) and [visualizations](https://fullmetalhealth.com/tag/data-science/)
+                <br>[* Spark and infrastructure discussions](https://fullmetalhealth.com/tag/spark/)
+                <br>[* Python snipits: SnakeBytes](https://fullmetalhealth.com/category/snake-bytes/)
+                <br>
+                <br>
+                --
+                ## Graphs vs Tables: Ready? Fight.
+                ### Lessons learned from building models from both graph and relational databases
+                <br><br>
+                #### Denise Gosnell, PhD
+                #### Sr. Technical Evangelist, PokitDok
+            </script>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            { src: 'plugin/markdown/marked.js' },
+            { src: 'plugin/markdown/markdown.js' },
+            { src: 'plugin/notes/notes.js', async: true },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+    });
+</script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>GraphsVsTables</title>
+    <title>DirtyData</title>
 
     <link rel="stylesheet" href="css/reveal.css">
     <link rel="stylesheet" href="css/theme/black.css">
@@ -27,7 +27,6 @@
 <div class="reveal">
     <div class="slides">
         <img src="pd-logo.png" class="pd-logo">
-
         <section  data-markdown data-separator="---" style="text-align: center;" >
             <script type="text/template">
                 ## Solving Healthcare’s Dirtiest Data Problems
@@ -37,8 +36,24 @@
                 #### Sr. Technical Evangelist, PokitDok
             </script>
         </section>
+        <section>
+            <section>
+                <h2>Our Founders</h2>
+                <img src="coFounders.png" alt="cofounders">
+            </section>
+            <section>
+                <h2>Locations</h2>
 
-        <section  data-markdown data-separator="--" data-transition="none" >
+                <img src="locations.png" class="big-img" alt="locations">
+                <br>
+            </section>
+            <section>
+                <h2>Who we work with</h2>
+
+                <img src="ourCustomers.png" class="big-img" alt="who we work with">
+            </section>
+        </section>
+        <section  data-markdown data-separator="--"  data-transition="none" >
             <script type="text/template">
                 ### /about/pokitdok
                 <br>
@@ -52,6 +67,9 @@
 
                 ### The API Platform For The Business Of Health
 
+                --
+                ### Eligibility API Usage
+                <img src="USATransactions.png" class="big-img" alt="Snapshot of PD API Usage">
                 --
                 ## Health?
 
@@ -72,24 +90,13 @@
                 National uncompensated care costs
                 <br>
                 (charity care + bad debt), 2014
-            </script>
-        </section>
-        <section data-background="top_grossing_referral_physicians_small.jpeg">
-            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
-        </section>
-
-        <section data-background="top_grossing_referral_physicians_small.jpeg">
-            <img src="1Bfraud.png" class="small-img">
-            <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
-        </section>
-        <section  data-markdown data-separator="--" data-transition="none" >
-            <script type="text/template">
+                --
                 ## Healthcare has changed
                 --
-                <img src="marketplace.png" alt="pd marketplace">
+                <img src="marketplace.png" class="big-img" alt="pd marketplace">
 
                 --
-                <img src="tc.png" class="big-img" alt="apple 2+">
+                <img src="tc.png" class="big-img" alt="what is killing startups">
 
                 #### [Source: "What’s Really Killing Digital Health Startups"](http://techcrunch.com/2015/10/30/whats-really-killing-digital-health-startups/)<br> 10/30/2015 by John Sung Kim (@JohnSungKim)
 
@@ -196,23 +203,1203 @@
                 ### Other hot tech from 1979
 
                 <img src="apple2plus.jpg" class="big-img" alt="apple 2+">
-
+                #### hot tech compliments of @riney
                 --
-                ### APIs > legacy &ldquo;standards&rdquo;
-
+                ## Wait, there's more!
+                <br>
+                * FHIR (Fast Healthcare Interoperability Resources)
+                * HL7 (Health Level Seven International)
+                * HIPPA (Health Insurance Portability and Accountability Act)
+                * ...
+                <br>
                 --
+                ## APIs > legacy &ldquo;standards&rdquo;
+                --
+                ## Eligibility API
+                ```python
+                import pokitdok
 
-            </script>
+                pd = pokitdok.api.connect()
+
+                #submit an eligibility request
+                pd.eligibility({
+                    "member": {
+                        "birth_date": "1970-01-01",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "id": "W000000000"
+                    },
+                    "trading_partner_id": "MOCKPAYER"
+                })```
+                </script>
+            </section>
+        <section data-transition="none">
+                <h3>Our Eligibility response</h3>
+                <pre><code class="json">{
+    "summary": {
+         "deductible": {
+             "individual": {
+                  "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                     },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "3000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "2983.57"
+                      }
+                    },
+                  "out_of_network": {
+                       "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "6000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "5983.57"
+                      }
+                  }
+              },
+              "family": {
+                 "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "6000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "5956.09"
+                      }
+                 },
+                  "out_of_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "12000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "11956.09"
+                      }
+                  }
+              }
+          },
+          "out_of_pocket": {
+              "individual": {
+                  "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "3000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "2983.57"
+                      }
+                  },
+                  "out_of_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "12500"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "12483.57"
+                      }
+                  }
+              },
+              "family": {
+                  "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                     "limit": {
+                          "currency": "USD",
+                          "amount": "6000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "5956.09"
+                      }
+                 },
+                  "out_of_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "25000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "24956.09"
+                      }
+                  }
+              }
+          }
+      },
+
+    "coverage": {
+        "coinsurance": [
+            {
+                "benefit_percent": 0.0,
+                "authorization_required": "yes",
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "yes",
+                "messages": [],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            },
+            {
+                "benefit_percent": 0.5,
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "no",
+                "messages": [],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            }
+        ],
+        "copay": [
+            {
+                "authorization_required": "yes",
+                "copayment": {
+                    "amount": "0",
+                    "currency": "USD"
+                },
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "yes",
+                "messages": [
+                    {
+                        "message": "PRIMARY OFFICE"
+                    }
+                ],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            },
+            {
+                "copayment": {
+                    "amount": "0",
+                    "currency": "USD"
+                },
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "not_applicable",
+                "messages": [
+                    {
+                        "message": "GYN OFFICE VS"
+                    },
+                    {
+                        "message": "GYN VISIT"
+                    },
+                    {
+                        "message": "SPEC OFFICE"
+                    },
+                    {
+                        "message": "SPEC VISIT"
+                    },
+                    {
+                        "message": "PRIME CARE VST"
+                    },
+                    {
+                        "message": "Plan Requires PreCert"
+                    },
+                    {
+                        "message": "Commercial"
+                    },
+                    {
+                        "message": "Plan includes NAP"
+                    },
+                    {
+                        "message": "Pre-Existing may apply"
+                    }
+                ],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            }
+        ],
+    "benefit_related_entities": [
+           {
+             "address": {
+                 "address_lines": [
+                     "123 TEST ROAD"
+                 ],
+                 "city": "LITTLE TOWN",
+                 "state": "CA",
+                 "zipcode": "12345"
+             },
+             "contacts": [
+                 {
+                     "phone": "8001234567"
+                 }
+             ],
+             "entity_identifier_code": "primary_care_provider",
+             "entity_type": "organization",
+             "first_name": "JANET",
+             "middle_name": "E",
+             "organization_name": "DOE",
+             "provider_code": "admitting"
+           },
+           {
+             "contacts": [
+                 {
+                     "name": "PAYERC BENEFITS HOTLINE",
+                     "phone": "8006762583"
+                 }
+             ],
+             "entity_identifier_code": "plan_sponsor",
+             "entity_type": "organization",
+             "organization_name": "PAYERC"
+           }
+        ],
+        "deductibles": [
+            {
+                "benefit_amount": {
+                    "amount": "6000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "5956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "3000",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "2983.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "12000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "11956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "6000",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "5983.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "remaining"
+            }
+        ],
+        "eligibility_begin_date": "2012-02-25",
+        "group_description": "MOCK INDIVIDUAL ADVANTAGE PLAN",
+        "group_number": "000000000000013",
+        "level": "employee_and_spouse",
+        "out_of_pocket": [
+            {
+                "benefit_amount": {
+                    "amount": "3000",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "yes"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "2983.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "yes",
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "6000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "yes"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "5956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "yes",
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "12500",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "no"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "12483.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "no",
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "25000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "no"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "24956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "remaining"
+            }
+        ],
+        "plan_begin_date": "2013-02-25",
+        "plan_number": "0000000",
+        "service_date": "2013-08-25",
+        "service_type_codes": [
+            "98"
+        ],
+        "service_types": [
+            "professional_physician_visit_office"
+        ]
+    },
+    "payer": {
+        "id": "MOCKPAYER",
+        "name": "MOCK PAYER INC"
+    },
+    "provider": {
+        "first_name": "JEROME",
+        "last_name": "JEROME AYA-AY",
+        "npi": "1467560003"
+    },
+    "service_type_codes": [
+        "98"
+    ],
+    "service_types": [
+        "professional_physician_visit_office"
+    ],
+    "subscriber": {
+        "address": {
+            "address_lines": [
+                "123 MAIN ST"
+            ],
+            "city": "SAN MATEO",
+            "state": "CA",
+            "zipcode": "94401"
+        },
+        "birth_date": "1970-01-25",
+        "first_name": "Jane",
+        "id": "W000000000",
+        "last_name": "Doe"
+    },
+    "trading_partner_id": "MOCKPAYER",
+    "valid_request": true
+}
+                </code></pre>
+            </section>
+            <section  data-markdown data-separator="--" data-transition="none" >
+                <script type="text/template">
+                ### Check if a provider is in your network:
+                ```python
+                #submit an eligibility request
+                response = pd.eligibility({
+                    "member": {
+                        "birth_date": "1970-01-01",
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "id": "W000000000"
+                    },
+                    "provider": {
+                        "first_name": "Jane",
+                        "last_name": "Doe",
+                        "npi": "W000000000"
+                    },
+                    "trading_partner_id": "MOCKPAYER"
+                })
+                in_network = response["data"]["coverage"]["messages"]
+                ```
+                --
+                ## Provider API
+                ```python
+                # by ID
+                client.providers(npi='1467560003')
+
+                # Searching providers by zipcode and specialty
+                client.providers(zipcode='29307', specialty='rheumatology', radius='3mi')
+                ```
+                --
+                ### Provider Payload
+                ```python
+                {
+                  "provider": {
+                    "birth_date": "1972",
+                    "degree": "MD",
+                    "description": "Dr. Jerome Aya-Ay was raised in the small rural town of Grantsville, West Virginia. He graduated from the University of Notre Dame with a bachelor's degree in Biology.  After studying for a Masters in Biomedical Sciences at Marshall University, he continued on to graduate from Marshall University School of Medicine in Huntington, WV with a medical degree. Dr. Aya-Ay completed his residency in Family Medicine at Spartanburg Regional Medical Center where he was awarded the Family Medicine...",
+                    "education": {
+                      "graduation_year": 2004,
+                      "medical_school": "Marshall University School Of Medicine"
+                    },
+                    "fax": "8645625230",
+                    "first_name": "Jerome",
+                    "gender": "Male",
+                    "last_name": "Aya-Ay",
+                    "licenses": [
+                      {
+                        "number": "27210",
+                        "state": "SC"
+                      }
+                    ],
+                    "licensures": [
+                      {
+                        "expiration_date": "2017-06-25",
+                        "number": "27210",
+                        "state": "SC",
+                        "status": "active",
+                        "verified": "Y"
+                      }
+                    ],
+                    "locations": [
+                      {
+                        "address_lines": [
+                          "1703 John B White SR Blvd Ste A"
+                        ],
+                        "city": "Spartanburg",
+                        "geo_location": [
+                          -81.98184,
+                          34.92287
+                        ],
+                        "phone": "8646417229",
+                        "role": [
+                          "practice"
+                        ],
+                        "state": "SC",
+                        "zipcode": "29301"
+                      },
+                      {
+                        "address_lines": [
+                          "1120 N Pleasantburg Dr Ste 301"
+                        ],
+                        "city": "Greenville",
+                        "geo_location": [
+                          -82.36932,
+                          34.80968
+                        ],
+                        "phone": "8642524808",
+                        "role": [
+                          "practice"
+                        ],
+                        "state": "SC",
+                        "zipcode": "29607"
+                      }
+                    ],
+                    "middle_name": "Benitez",
+                    "npi": "1467560003",
+                    "phone": "8645625100",
+                    "prefix": "DR",
+                    "residencies": [
+                      {
+                        "institution_name": "Spartanburg Regional Healthcare System",
+                        "type": "Residency"
+                      },
+                      {
+                        "institution_name": "Marshall University School Of Medicine",
+                        "to_year": 2004,
+                        "type": "Medical School"
+                      }
+                    ],
+                    "small_image_url": "https://d2sc6ykmuixlzf.cloudfront.net/pda0233f41447f472dab57393b0cbf5bb7-29ef4cc83c4372854a573b302b259b2c-thumbnail.jpeg",
+                    "specialty": [
+                      "General & Family Medicine",
+                      "Family Practice",
+                      "Preventive Medicine",
+                      "General Practitioner"
+                    ],
+                    "specialty_primary": [
+                      "Family Practice"
+                    ],
+                    "specialty_secondary": [
+                      "Physician"
+                    ],
+                    "uuid": "fc44d0e0-ea7f-492e-90f0-0f9148453019",
+                    "verified": true
+                  }
+                }
+                    ```
+                    --
+                ## Claim API
+                ```python
+                client.claims({
+                "transaction_code": "chargeable",
+                "trading_partner_id": "MOCKPAYER",
+                "billing_provider": {
+                    "taxonomy_code": "207Q00000X",
+                    "first_name": "Jerome",
+                    "last_name": "Aya-Ay",
+                    "npi": "1467560003",
+                    "address": {
+                        "address_lines": [
+                            "8311 WARREN H ABERNATHY HWY"
+                        ],
+                        "city": "SPARTANBURG",
+                        "state": "SC",
+                        "zipcode": "29301"
+                    },
+                    "tax_id": "123456789"
+                },
+                "subscriber": {
+                    "first_name": "Jane",
+                    "last_name": "Doe",
+                    "member_id": "W000000000",
+                    "address": {
+                        "address_lines": ["123 N MAIN ST"],
+                        "city": "SPARTANBURG",
+                        "state": "SC",
+                        "zipcode": "29301"
+                    },
+                    "birth_date": "1970-01-25",
+                    "gender": "female"
+                },
+                "claim": {
+                    "total_charge_amount": 60.0,
+                    "service_lines": [
+                        {
+                            "procedure_code": "99213",
+                            "charge_amount": 60.0,
+                            "unit_count": 1.0,
+                            "diagnosis_codes": ["J10.1"],
+                            "service_date": "2016-01-25"
+                        }
+                    ]
+                }
+                })
+                ```
+                --
+                ### Our APIs
+                <img src="apis.png" class="big-img" alt="apis">
+                --
+                ### Then vs. Now
+
+                <img src="connectivitySolution.png" class="big-img" alt="connectivity">
+                 </script>
         </section>
-        <section  data-markdown data-separator="---" data-separator-vertical="--" style="text-align: center;" >
-            <script type="text/template">
-                ## Solving Healthcare’s Dirtiest Data Problems
-                ### and I Might Mention Blockchain.
-                <br><br>
-                #### Denise Gosnell, PhD
-                #### Sr. Technical Evangelist, PokitDok
-            </script>
+        <section>
+            <section>
+                <h2>Some Data Science</h2>
+            </section>
+            <section data-background="top_grossing_referral_physicians_small.jpeg">
+                <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
+            </section>
+            <section data-background="top_grossing_referral_physicians_small.jpeg">
+                <img src="1Bfraud.png" class="small-img">
+                <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
+            </section>
+            <section>
+                <img src="marketplace.png" class="big-img" alt="pd marketplace">
+            </section>
+            <section data-background-image="providers_100k_v1_small.jpeg" data-background-size="1100px" data-background-color="#2D2E30">
+                <h4 style="text-align: left; padding: 0.0em 0.0em 25.0em 0.0em;">Top Providers</h4>
+            </section>
+            <section>
+                <h2>LDA</h2>
+                Unsupervised machine learning for <br>document topic discovery
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+            </section>
+            <section>
+                <h2>LDA</h2>
+                Unsupervised machine learning for <br>document topic discovery
+                <br>
+                <br>
+                <ul>
+                    <li>I like broccoli and bananas.</li>
+                    <li>My sister adopted a hampster.</li>
+                    <li>Look at this hampster munching on a banana.</li>
+                </ul>
+                <br>
+
+            </section>
+            <section>
+                <h3>Our Eligibility response to bag of words</h3>
+                <pre><code class="json">{
+    "summary": {
+         "deductible": {
+             "individual": {
+                  "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                     },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "3000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "2983.57"
+                      }
+                    },
+                  "out_of_network": {
+                       "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "6000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "5983.57"
+                      }
+                  }
+              },
+              "family": {
+                 "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "6000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "5956.09"
+                      }
+                 },
+                  "out_of_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "12000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "11956.09"
+                      }
+                  }
+              }
+          },
+          "out_of_pocket": {
+              "individual": {
+                  "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "3000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "2983.57"
+                      }
+                  },
+                  "out_of_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "16.43"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "12500"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "12483.57"
+                      }
+                  }
+              },
+              "family": {
+                  "in_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                     "limit": {
+                          "currency": "USD",
+                          "amount": "6000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "5956.09"
+                      }
+                 },
+                  "out_of_network": {
+                      "applied": {
+                          "currency": "USD",
+                          "amount": "43.91"
+                      },
+                      "limit": {
+                          "currency": "USD",
+                          "amount": "25000"
+                      },
+                      "remaining": {
+                          "currency": "USD",
+                          "amount": "24956.09"
+                      }
+                  }
+              }
+          }
+      },
+
+    "coverage": {
+        "coinsurance": [
+            {
+                "benefit_percent": 0.0,
+                "authorization_required": "yes",
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "yes",
+                "messages": [],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            },
+            {
+                "benefit_percent": 0.5,
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "no",
+                "messages": [],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            }
+        ],
+        "copay": [
+            {
+                "authorization_required": "yes",
+                "copayment": {
+                    "amount": "0",
+                    "currency": "USD"
+                },
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "yes",
+                "messages": [
+                    {
+                        "message": "PRIMARY OFFICE"
+                    }
+                ],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            },
+            {
+                "copayment": {
+                    "amount": "0",
+                    "currency": "USD"
+                },
+                "coverage_level": "employee_and_spouse",
+                "in_plan_network": "not_applicable",
+                "messages": [
+                    {
+                        "message": "GYN OFFICE VS"
+                    },
+                    {
+                        "message": "GYN VISIT"
+                    },
+                    {
+                        "message": "SPEC OFFICE"
+                    },
+                    {
+                        "message": "SPEC VISIT"
+                    },
+                    {
+                        "message": "PRIME CARE VST"
+                    },
+                    {
+                        "message": "Plan Requires PreCert"
+                    },
+                    {
+                        "message": "Commercial"
+                    },
+                    {
+                        "message": "Plan includes NAP"
+                    },
+                    {
+                        "message": "Pre-Existing may apply"
+                    }
+                ],
+                "service_type_codes": [
+                    "98"
+                ],
+                "service_types": [
+                    "professional_physician_visit_office"
+                ]
+            }
+        ],
+    "benefit_related_entities": [
+           {
+             "address": {
+                 "address_lines": [
+                     "123 TEST ROAD"
+                 ],
+                 "city": "LITTLE TOWN",
+                 "state": "CA",
+                 "zipcode": "12345"
+             },
+             "contacts": [
+                 {
+                     "phone": "8001234567"
+                 }
+             ],
+             "entity_identifier_code": "primary_care_provider",
+             "entity_type": "organization",
+             "first_name": "JANET",
+             "middle_name": "E",
+             "organization_name": "DOE",
+             "provider_code": "admitting"
+           },
+           {
+             "contacts": [
+                 {
+                     "name": "PAYERC BENEFITS HOTLINE",
+                     "phone": "8006762583"
+                 }
+             ],
+             "entity_identifier_code": "plan_sponsor",
+             "entity_type": "organization",
+             "organization_name": "PAYERC"
+           }
+        ],
+        "deductibles": [
+            {
+                "benefit_amount": {
+                    "amount": "6000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "5956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "3000",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "2983.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "yes",
+                "messages": [],
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "12000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "11956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "6000",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "eligibility_date": "2013-01-25",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "calendar_year"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "5983.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "remaining"
+            }
+        ],
+        "eligibility_begin_date": "2012-02-25",
+        "group_description": "MOCK INDIVIDUAL ADVANTAGE PLAN",
+        "group_number": "000000000000013",
+        "level": "employee_and_spouse",
+        "out_of_pocket": [
+            {
+                "benefit_amount": {
+                    "amount": "3000",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "yes"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "2983.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "yes",
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "6000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "yes"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "5956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "yes",
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "12500",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "no"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "12483.57",
+                    "currency": "USD"
+                },
+                "coverage_level": "individual",
+                "in_plan_network": "no",
+                "time_period": "remaining"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "25000",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "no"
+            },
+            {
+                "benefit_amount": {
+                    "amount": "24956.09",
+                    "currency": "USD"
+                },
+                "coverage_level": "family",
+                "in_plan_network": "no",
+                "messages": [],
+                "time_period": "remaining"
+            }
+        ],
+        "plan_begin_date": "2013-02-25",
+        "plan_number": "0000000",
+        "service_date": "2013-08-25",
+        "service_type_codes": [
+            "98"
+        ],
+        "service_types": [
+            "professional_physician_visit_office"
+        ]
+    },
+    "payer": {
+        "id": "MOCKPAYER",
+        "name": "MOCK PAYER INC"
+    },
+    "provider": {
+        "first_name": "JEROME",
+        "last_name": "JEROME AYA-AY",
+        "npi": "1467560003"
+    },
+    "service_type_codes": [
+        "98"
+    ],
+    "service_types": [
+        "professional_physician_visit_office"
+    ],
+    "subscriber": {
+        "address": {
+            "address_lines": [
+                "123 MAIN ST"
+            ],
+            "city": "SAN MATEO",
+            "state": "CA",
+            "zipcode": "94401"
+        },
+        "birth_date": "1970-01-25",
+        "first_name": "Jane",
+        "id": "W000000000",
+        "last_name": "Doe"
+    },
+    "trading_partner_id": "MOCKPAYER",
+    "valid_request": true
+}
+                </code></pre>
+                coverage, coinsurance,
+                <br>chiropractic, professional_physician_visit_office, ...
+            </section>
+            <section>
+                <h2>LDA Visualization</h2>
+                <img src="topics.png" class="big-img" alt="LDA dashboard">
+                <br>
+                <a href="https://pyldavis.readthedocs.io/en/latest/)">The pyLDAvis library rocks</a>
+            </section>
         </section>
+
+        <section  data-markdown data-separator="---" style="text-align: center;" >
+                <script type="text/template">
+                    ## Solving Healthcare’s Dirtiest Data Problems
+                    ### and I Might Mention Blockchain.
+                    <br><br>
+                    #### Denise Gosnell, PhD
+                    #### Sr. Technical Evangelist, PokitDok
+                </script>
+            </section>
     </div>
 </div>
 
