@@ -1,0 +1,246 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>GraphsVsTables</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <style>
+
+    </style>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <img src="pd-logo.png" class="pd-logo">
+
+        <section  data-markdown data-separator="---" style="text-align: center;" >
+            <script type="text/template">
+                ## Solving Healthcare’s Dirtiest Data Problems
+                ### and I Might Mention Blockchain.
+                <br><br>
+                #### Denise Gosnell, PhD
+                #### Sr. Technical Evangelist, PokitDok
+            </script>
+        </section>
+
+        <section  data-markdown data-separator="--" data-transition="none" >
+            <script type="text/template">
+                ### /about/pokitdok
+                <br>
+                <br>
+                <br>
+                --
+                ### /about/pokitdok
+
+                <br>
+                <br>
+
+                ### The API Platform For The Business Of Health
+
+                --
+                ## Health?
+
+                --
+                ## #1
+
+                --
+
+                Medical bills are the primary cause of personal bankruptcy in the U.S.
+
+                --
+                ## $12,900
+                --
+                Average out of pocket spend before insurance starts paying, for families on HDHPs
+                --
+                ## $42.8 billion
+                --
+                National uncompensated care costs
+                <br>
+                (charity care + bad debt), 2014
+            </script>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
+        </section>
+
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <img src="1Bfraud.png" class="small-img">
+            <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none" >
+            <script type="text/template">
+                ## Healthcare has changed
+                --
+                <img src="marketplace.png" alt="pd marketplace">
+
+                --
+                <img src="tc.png" class="big-img" alt="apple 2+">
+
+                #### [Source: "What’s Really Killing Digital Health Startups"](http://techcrunch.com/2015/10/30/whats-really-killing-digital-health-startups/)<br> 10/30/2015 by John Sung Kim (@JohnSungKim)
+
+                --
+                ## The core == insurance companies (payers)
+
+                <ul>
+                    <li>Eligibility (coverage, plan structure, deductibles)</li>
+                    <li>Claims and claims status</li>
+                    <li>Enrollment</li>
+                    <li>Authorizations</li>
+                    <li>Referrals</li>
+                </ul>
+
+                #### ... AKA ASC X12 5010.
+
+                --
+                ### X12 Eligibility request
+
+                ```html
+                HL*1**20*1~NM1*PR*2*Premium Gold Insurance Co.****
+                *PI*0123456~HL*2*1*21*1~NM1*1P*1*Back*Has*Your***X
+                X*9876543210~HL*3*2*22*0~TRN*1*89368DC6A14E4E529AA
+                876ED416E8A9F*1453915417~NM1*IL*1*A-lot*Lifts****M
+                I*MEM10001~DMG*D8*19820315*M~EQ*98^33~
+                ```
+                <br>
+                ##### (the spec for this one request is 552 pages)
+
+                --
+
+                ### Our Eligibility request
+
+                ```javascript
+                {
+                  "member": {
+                  "birth_date": "1982-03-15",
+                  "first_name": "Lifts",
+                  "last_name": "A-Lot",
+                  "id": "MEM10001"
+                },
+                  "provider": {
+                    "first_name": "Has-Your",
+                    "last_name": "Back",
+                    "npi": "9876543210"
+                },
+                  "service_types": [
+                    "professional_physician_visit_office",
+                    "chiropractic"],
+                  "trading_partner_id": "premium_gold_insurance"
+                }
+                ```
+
+                --
+
+                ### X12 Eligibility response
+
+                ```html
+                HL*1**20*1~NM1*PR*2*Premium Gold Insurance Co.****
+                *PI*0123456~HL*2*1*21*1~NM1*1P*1*Back*Has*Your***X
+                X*9876543210~HL*3*2*22*0~TRN*2*89368DC6A14E4E529AA
+                876ED416E8A9F*1453915417NM1*IL*1*A-lot*Lifts****MI
+                *MEM10001~N3*2150 Pleasant Drive~N4*Sunny*CA*90001
+                0001~DMG*D8*19820315*M~DTP*291*D8*20141001~EB*B**9
+                8****10~EB*A**33*****.20~
+                ```
+                <br>
+                #### oh God make it stop
+
+                --
+
+                ### Our Eligibility response
+
+                ```javascript
+                {
+                  "coverage": [
+                    "coinsurance": [
+                      {
+                        "benefit_percent": 0.2,
+                        "service_types": [
+                          "chiropractic"
+                        ]
+                      }
+                    ],
+                    "copay": {
+                      "copayment": {
+                        "amount": "10",
+                        "currency": "USD"
+                      },
+                    "service_types": [
+                      "professional_physician_visit_office"
+                    ]
+                  }
+                ],
+                  "plan_begin_date": "2014-10-01",
+
+                (...and so on...)
+                }
+                ```
+                --
+                ### Acredited Standards Committee (ASC) started work in 1979.
+
+                --
+                ### Other hot tech from 1979
+
+                <img src="apple2plus.jpg" class="big-img" alt="apple 2+">
+
+                --
+                ### APIs > legacy &ldquo;standards&rdquo;
+
+                --
+
+            </script>
+        </section>
+Notes --
+        What is next --
+        -- what is an API?
+        -- what problems do they solve?
+
+        What is a blockchain
+        -- what problems do they solve?
+
+        <section  data-markdown data-separator="---" data-separator-vertical="--" style="text-align: center;" >
+            <script type="text/template">
+                ## Solving Healthcare’s Dirtiest Data Problems
+                ### and I Might Mention Blockchain.
+                <br><br>
+                #### Denise Gosnell, PhD
+                #### Sr. Technical Evangelist, PokitDok
+            </script>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            { src: 'plugin/markdown/marked.js' },
+            { src: 'plugin/markdown/markdown.js' },
+            { src: '/plugin/math/math.js', async: true },
+            { src: 'plugin/notes/notes.js', async: true },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+    });
+</script>
+</body>
+</html>

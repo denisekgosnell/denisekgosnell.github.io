@@ -1,0 +1,8 @@
+title: Slide-decks
+description: Various presentations
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-slate
+
+gems:
+  - jekyll-mentions
