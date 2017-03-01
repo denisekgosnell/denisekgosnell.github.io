@@ -29,8 +29,8 @@
         <img src="pd-logo.png" class="pd-logo">
         <section  data-markdown data-separator="---" style="text-align: center;" >
             <script type="text/template">
-                ### Lessons learned from building graph models with
-                ### Neo4j, Titan, and DSE
+                ## Let's talk about some failures
+                ### Lessons learned with Neo4J, Titan, and DSE
                 <br><br>
                 #### Denise Gosnell, PhD
                 #### Sr. Technical Evangelist, PokitDok
@@ -41,13 +41,12 @@
                 ### /about/pokitdok
                 <br>
                 <br>
-                <br>
-                <br>
+                ### <h3 style="color: #5f285e;">The Operating System For The Business Of Health</h3>
                 --
                 ### /about/pokitdok
                 <br>
                 <br>
-                ### The API Platform For The Business Of Health
+                ### <h3>The Operating System For The Business Of Health</h3>
 
                 --
 
@@ -157,16 +156,29 @@
                 <br>
                 <br>
                 ### Issue: bulk loading discovered a memory leak
+                #### <h4 style="color: #5f285e;">hello</h4>
                 --
-                ### Graph DB Infrastructure: v0.1
+                ## Graph DB Infrastructure: v0.0
+                <br>
+                1. 3 Million provider documents in Mongo
+                2. ETL and persistance to Neo4J
+                3. Goal: doesn't matter. Never got there.
+                <br>
+                <br>
+                <br>
+                ### Issue: bulk loading discovered a memory leak
+                #### <h4>disclaimer... this was 2014</h4>
+                --
+                ## Graph DB Infrastructure: v0.1
                 <br>
                 1. API event streaming with Kafka
                 2. Persistence to Titan 0.5.3 backed by Cassandra
-                3. Goal: modeling identity
+                3. Goals: (1) Resolving Identities (2) Basic analytics
                 <br>
                 <br>
                 <br>
-                ### Issue: run time for identity match/merge
+                ### Some issues:
+                ### Run time for basic queries; Titan-Hadoop
                 --
                 ### Titan Load Statistics
                 <img src="TitanLoadStatistics.png" class="big-img" alt="Graph blog">
@@ -176,19 +188,46 @@
                 ### Graph DB Infrastructure: v0.2
                 <br>
                 1. API event streaming with Kafka
-                2. Persistence to DSE backed by Cassandra
+                2. Persistence to DSE
                 3. Goal: storing our transactions for entity linking
                 <br>
                 <br>
                 <br>
-                ### Issue: OOM Errors on basic queries [32G, 4 cores, ~33M vertices]
+                ### Some issues: OOM Errors on basic queries
+                ### [32G, 4 cores, ~33M vertices]
+                <br>
+
+                --
+
+                ### Graph DB Infrastructure: v0.2
+                <br>
+                1. API event streaming with Kafka
+                2. Persistence to DSE
+                3. Goal: storing our transactions for entity linking
+                <br>
+                <br>
+                <br>
+                ### Some issues: OOM Errors on basic queries
+                ### [32G, 4 cores, ~33M vertices]
+                ````
+                Could not find a suitable index to answer graph query
+                ````
                 --
                 ### Assumptions: Entity Resolution
 
                 <img src="HealthGraph.png" class="big-img" alt="Graph Schema">
                 --
-                ### Lessons learned from building graph models with
-                ### Neo4j, Titan, and DSE
+
+                ### What would we love to see?
+                <br>
+                1. Working Spark graph computer
+                2. Ability to answer basic analytics: are we the only ones using groupCount?
+                3. More resources on best practices in [property/knowledge/semantic] graph modeling
+
+                --
+
+                ## Let's talk about some failures
+                ### Lessons learned with Neo4J, Titan, and DSE
                 <br><br>
                 #### Denise Gosnell, PhD
                 #### Sr. Technical Evangelist, PokitDok
