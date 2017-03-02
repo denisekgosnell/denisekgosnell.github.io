@@ -47,6 +47,43 @@
                 <br>
                 <br>
                 ### <h3>The Operating System For The Business Of Health</h3>
+                --
+                ## Health?
+
+                --
+                ## #1
+
+                --
+
+                Medical bills are the primary cause of personal bankruptcy in the U.S.
+
+                --
+                ## $12,900
+                --
+                Average out of pocket spend before insurance starts paying, for families on HDHPs
+                --
+                ## $42.8 billion
+                --
+                National uncompensated care costs
+                <br>
+                (charity care + bad debt), 2014
+                --
+                <img src="tc.png" class="big-img" alt="what is killing startups">
+
+                #### [Source: "What’s Really Killing Digital Health Startups"](http://techcrunch.com/2015/10/30/whats-really-killing-digital-health-startups/)<br> 10/30/2015 by John Sung Kim (@JohnSungKim)
+
+                --
+                ## The core == insurance companies (payers)
+
+                <ul>
+                    <li>Eligibility (coverage, plan structure, deductibles)</li>
+                    <li>Claims and claims status</li>
+                    <li>Enrollment</li>
+                    <li>Authorizations</li>
+                    <li>Referrals</li>
+                </ul>
+
+                #### ... AKA ASC X12 5010.
 
                 --
 
@@ -132,6 +169,88 @@
                 (...and so on...)
                 }
                 ```
+                </script>
+        </section>
+        </section>
+        <section  data-markdown data-separator="--"  data-transition="none" >
+            <script type="text/template">
+                ## Provider API
+                ```python
+                {
+                  "provider": {
+                    "birth_date": "1972",
+                    "degree": "MD",
+                    "description": "Dr. Jerome Aya-Ay was raised in the small rural town of Grantsville, West Virginia. He graduated from the University of Notre Dame with a bachelor's degree in Biology.  After studying for a Masters in Biomedical Sciences at Marshall University, he continued on to graduate from Marshall University School of Medicine in Huntington, WV with a medical degree. Dr. Aya-Ay completed his residency in Family Medicine at Spartanburg Regional Medical Center where he was awarded the Family Medicine...",
+                    "fax": "8645625230",
+                    "first_name": "Jerome",
+                    "gender": "Male",
+                    "last_name": "Aya-Ay",
+                    "licenses": [
+                      {
+                        "number": "27210",
+                        "state": "SC"
+                      }
+                    ],
+                    "locations": [
+                      {
+                        "address_lines": [
+                          "1703 John B White SR Blvd Ste A"
+                        ],
+                        "city": "Spartanburg",
+                        "geo_location": [
+                          -81.98184,
+                          34.92287
+                        ],
+                        "phone": "8646417229",
+                        "role": [
+                          "practice"
+                        ],
+                        "state": "SC",
+                        "zipcode": "29301"
+                      },
+                      {
+                        "address_lines": [
+                          "1120 N Pleasantburg Dr Ste 301"
+                        ],
+                        "city": "Greenville",
+                        "geo_location": [
+                          -82.36932,
+                          34.80968
+                        ],
+                        "phone": "8642524808",
+                        "role": [
+                          "practice"
+                        ],
+                        "state": "SC",
+                        "zipcode": "29607"
+                      }
+                    ],
+                    "middle_name": "Benitez",
+                    "npi": "1467560003",
+                    "phone": "8645625100",
+                    "prefix": "DR",
+                    "specialty": [
+                      "General & Family Medicine",
+                      "Family Practice",
+                      "Preventive Medicine",
+                      "General Practitioner"
+                    ],
+                    "specialty_primary": [
+                      "Family Practice"
+                    ],
+                    "specialty_secondary": [
+                      "Physician"
+                    ],
+                    "uuid": "fc44d0e0-ea7f-492e-90f0-0f9148453019",
+                    "verified": true
+                  }
+                }
+                    ```
+            </script>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none">
+            <script type="text/template">
+                ## What about graphs?
                 --
                 ## Graph Schema
 
@@ -144,6 +263,9 @@
         <section data-background="top_grossing_referral_physicians_small.jpeg">
             <img src="1Bfraud.png" class="small-img">
             <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
+        </section>
+        <section data-background-image="providers_100k_v1_small.jpeg" data-background-size="1100px" data-background-color="#2D2E30">
+            <h4 style="text-align: left; padding: 0.0em 0.0em 25.0em 0.0em;">Top Providers</h4>
         </section>
         <section  data-markdown data-separator="--" data-transition="none">
             <script type="text/template">
