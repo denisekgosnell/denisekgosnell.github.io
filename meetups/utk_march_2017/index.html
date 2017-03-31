@@ -1,0 +1,389 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>GraphStories</title>
+
+    <link rel="stylesheet" href="css/reveal.css">
+    <link rel="stylesheet" href="css/theme/black.css">
+
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <style>
+
+    </style>
+    <!-- Printing and PDF exports -->
+    <script>
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    </script>
+</head>
+<body>
+<div class="reveal">
+    <div class="slides">
+        <img src="pd-logo.png" class="pd-logo">
+        <section  data-markdown data-separator="---" style="text-align: center;" >
+            <script type="text/template">
+                ## Let's talk about some failures
+                ### Lessons learned with Neo4J, Titan, and DSE
+                <br><br>
+                #### Denise Gosnell, PhD
+                #### Sr. Technical Evangelist, PokitDok
+            </script>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none" >
+            <script type="text/template">
+                ## /about/pokitdok
+                <br>
+                <br>
+                ### <h3 style="color: #5f285e;">The Operating System For The Business Of Health</h3>
+                --
+                ## /about/pokitdok
+                <br>
+                <br>
+                ### <h3>The Operating System For The Business Of Health</h3>
+                --
+                ## Health?
+
+                --
+                ## #1
+
+                --
+                Medical bills are the primary cause of personal bankruptcy in the U.S.
+                --
+                ## $12,900
+                --
+                Average out of pocket spend before insurance starts paying, for families on HDHPs
+                --
+                ## $42.8 billion
+                --
+                National uncompensated care costs
+                <br>
+                (charity care + bad debt), 2014
+                --
+                <img src="tc.png" class="big-img" alt="what is killing startups">
+
+                #### [Source: "What’s Really Killing Digital Health Startups"](http://techcrunch.com/2015/10/30/whats-really-killing-digital-health-startups/)<br> 10/30/2015 by John Sung Kim (@JohnSungKim)
+
+                --
+                ## The core == insurance companies (payers)
+
+                <ul>
+                    <li>Eligibility (coverage, plan structure, deductibles)</li>
+                    <li>Claims and claims status</li>
+                    <li>Enrollment</li>
+                    <li>Authorizations</li>
+                    <li>Referrals</li>
+                </ul>
+
+                #### ... AKA ASC X12 5010.
+
+                --
+
+                ## X12 Eligibility request
+
+                ```html
+                HL*1**20*1~NM1*PR*2*Premium Gold Insurance Co.****
+                *PI*0123456~HL*2*1*21*1~NM1*1P*1*Back*Has*Your***X
+                X*9876543210~HL*3*2*22*0~TRN*1*89368DC6A14E4E529AA
+                876ED416E8A9F*1453915417~NM1*IL*1*A-lot*Lifts****M
+                I*MEM10001~DMG*D8*19820315*M~EQ*98^33~
+                ```
+                <br>
+                ##### (the spec for this one request is 552 pages)
+
+                --
+
+                ## Our Eligibility request
+
+                ```javascript
+                {
+                  "member": {
+                  "birth_date": "1982-03-15",
+                  "first_name": "Lifts",
+                  "last_name": "A-Lot",
+                  "id": "MEM10001"
+                },
+                  "provider": {
+                    "first_name": "Has-Your",
+                    "last_name": "Back",
+                    "npi": "9876543210"
+                },
+                  "service_types": [
+                    "professional_physician_visit_office",
+                    "chiropractic"],
+                  "trading_partner_id": "premium_gold_insurance"
+                }
+                ```
+
+                --
+
+                ## X12 Eligibility response
+
+                ```html
+                HL*1**20*1~NM1*PR*2*Premium Gold Insurance Co.****
+                *PI*0123456~HL*2*1*21*1~NM1*1P*1*Back*Has*Your***X
+                X*9876543210~HL*3*2*22*0~TRN*2*89368DC6A14E4E529AA
+                876ED416E8A9F*1453915417NM1*IL*1*A-lot*Lifts****MI
+                *MEM10001~N3*2150 Pleasant Drive~N4*Sunny*CA*90001
+                0001~DMG*D8*19820315*M~DTP*291*D8*20141001~EB*B**9
+                8****10~EB*A**33*****.20~
+                ```
+                <br>
+                #### oh God make it stop
+
+                --
+
+                ## Our Eligibility response
+
+                ```javascript
+                {
+                  "coverage": [
+                    "coinsurance": [
+                      {
+                        "benefit_percent": 0.2,
+                        "service_types": [
+                          "chiropractic"
+                        ]
+                      }
+                    ],
+                    "copay": {
+                      "copayment": {
+                        "amount": "10",
+                        "currency": "USD"
+                      },
+                    "service_types": [
+                      "professional_physician_visit_office"
+                    ]
+                  }
+                ],
+                  "plan_begin_date": "2014-10-01",
+
+                (...and so on...)
+                }
+                ```
+                </script>
+        </section>
+        </section>
+        <section  data-markdown data-separator="--"  data-transition="none" >
+            <script type="text/template">
+                ## Provider API
+                ```python
+                {
+                  "provider": {
+                    "birth_date": "1972",
+                    "degree": "MD",
+                    "description": "Dr. Jerome Aya-Ay was raised in the small rural town of Grantsville, West Virginia. He graduated from the University of Notre Dame with a bachelor's degree in Biology.  After studying for a Masters in Biomedical Sciences at Marshall University, he continued on to graduate from Marshall University School of Medicine in Huntington, WV with a medical degree. Dr. Aya-Ay completed his residency in Family Medicine at Spartanburg Regional Medical Center where he was awarded the Family Medicine...",
+                    "fax": "8645625230",
+                    "first_name": "Jerome",
+                    "gender": "Male",
+                    "last_name": "Aya-Ay",
+                    "licenses": [
+                      {
+                        "number": "27210",
+                        "state": "SC"
+                      }
+                    ],
+                    "locations": [
+                      {
+                        "address_lines": [
+                          "1703 John B White SR Blvd Ste A"
+                        ],
+                        "city": "Spartanburg",
+                        "geo_location": [
+                          -81.98184,
+                          34.92287
+                        ],
+                        "phone": "8646417229",
+                        "role": [
+                          "practice"
+                        ],
+                        "state": "SC",
+                        "zipcode": "29301"
+                      },
+                      {
+                        "address_lines": [
+                          "1120 N Pleasantburg Dr Ste 301"
+                        ],
+                        "city": "Greenville",
+                        "geo_location": [
+                          -82.36932,
+                          34.80968
+                        ],
+                        "phone": "8642524808",
+                        "role": [
+                          "practice"
+                        ],
+                        "state": "SC",
+                        "zipcode": "29607"
+                      }
+                    ],
+                    "middle_name": "Benitez",
+                    "npi": "1467560003",
+                    "phone": "8645625100",
+                    "prefix": "DR",
+                    "specialty": [
+                      "General & Family Medicine",
+                      "Family Practice",
+                      "Preventive Medicine",
+                      "General Practitioner"
+                    ],
+                    "specialty_primary": [
+                      "Family Practice"
+                    ],
+                    "specialty_secondary": [
+                      "Physician"
+                    ],
+                    "uuid": "fc44d0e0-ea7f-492e-90f0-0f9148453019",
+                    "verified": true
+                  }
+                }
+                    ```
+            </script>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none">
+            <script type="text/template">
+                ## What about graphs?
+                --
+                ## Graph Schema
+
+                <img src="HealthGraph.png" class="big-img" alt="Graph Schema">
+            </script>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <h3 style="text-align: right; padding: 0.0em 0.0em 15.0em 0.0em;">Medicare Referral Network</h3>
+        </section>
+        <section data-background="top_grossing_referral_physicians_small.jpeg">
+            <img src="1Bfraud.png" class="small-img">
+            <h4><a href="http://www.miamiherald.com/news/local/community/miami-dade/article91231277.html">From the Miami Herald</a></h4>
+        </section>
+        <section data-background-image="providers_100k_v1_small.jpeg" data-background-size="1100px" data-background-color="#2D2E30">
+            <h4 style="text-align: left; padding: 0.0em 0.0em 25.0em 0.0em;">Top Providers</h4>
+        </section>
+        <section  data-markdown data-separator="--" data-transition="none">
+            <script type="text/template">
+                ## Graph DB Infrastructure: v0.0
+                <br>
+                1. 3 Million provider documents in Mongo
+                2. ETL and persistance to Neo4J
+                3. Goal: doesn't matter. Never got there.
+                <br>
+                <br>
+                <br>
+                ### <h4 style="color: #5f285e;">Issue: bulk loading discovered a memory leak</h4>
+                ### <h4 style="color: #5f285e;">hello</h4>
+                --
+                ## Graph DB Infrastructure: v0.0
+                <br>
+                1. 3 Million provider documents in Mongo
+                2. ETL and persistance to Neo4J
+                3. Goal: doesn't matter. Never got there.
+                <br>
+                <br>
+                <br>
+                ### Issue: bulk loading discovered a memory leak
+                ### <h4>disclaimer... this was 2014</h4>
+                --
+                ## Graph DB Infrastructure: v0.1
+                <br>
+                1. API event streaming with Kafka
+                2. Persistence to Titan 0.5.3 backed by Cassandra
+                3. Goals: (1) Resolving Identities (2) Basic analytics
+                <br>
+                <br>
+                <br>
+                ### <h4 style="color: #5f285e;">Some issues:</h4>
+                ### <h4 style="color: #5f285e;">Run time for basic queries; Titan-Hadoop</h4>
+                 --
+                ## Graph DB Infrastructure: v0.1
+                <br>
+                1. API event streaming with Kafka
+                2. Persistence to Titan 0.5.3 backed by Cassandra
+                3. Goals: (1) Resolving Identities (2) Basic analytics
+                <br>
+                <br>
+                <br>
+                ### Some issues:
+                ### Run time for basic queries; Titan-Hadoop
+                --
+                ## Titan Load Statistics
+                <img src="TitanLoadStatistics.png" class="big-img" alt="Graph blog">
+                <h4><a href="https://fullmetalhealth.com/titan-load-statistics/">Our full post</a></h4>
+                --
+
+                ## Graph DB Infrastructure: v0.2
+                <br>
+                1. API event streaming with Kafka
+                2. Persistence to DSE
+                3. Goal: storing our transactions for entity linking
+                <br>
+                <br>
+                <br>
+                ### <h4 style="color: #5f285e;">Some issues: OOM Errors on basic queries</h4>
+                ### <h4 style="color: #5f285e;">[32G, 4 cores, ~33M vertices]</h4>
+                <br>
+
+                --
+
+                ## Graph DB Infrastructure: v0.2
+                <br>
+                1. API event streaming with Kafka
+                2. Persistence to DSE
+                3. Goal: storing our transactions for entity linking
+                <br>
+                <br>
+                <br>
+                ### Some issues: OOM Errors on basic queries
+                ### [32G, 4 cores, ~33M vertices]
+                ````
+                Could not find a suitable index to answer graph query
+                ````
+                --
+                ## Assumptions: Entity Resolution
+
+                <img src="HealthGraph.png" class="big-img" alt="Graph Schema">
+                --
+
+                ## What would we love to see?
+                <br>
+                1. Working graph computer
+                2. Ability to answer basic analytics: are we the only ones using groupCount?
+                3. More resources on best practices in [property/knowledge/semantic] graph modeling
+
+                --
+
+                ## Let's talk about some failures
+                ### Lessons learned with Neo4J, Titan, and DSE
+                <br><br>
+                #### Denise Gosnell, PhD
+                #### Sr. Technical Evangelist, PokitDok
+                #### Twitter/LinkedIn/GitHub: @denisekgosnell
+            </script>
+        </section>
+    </div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
+    // More info https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+        history: true,
+
+        // More info https://github.com/hakimel/reveal.js#dependencies
+        dependencies: [
+            { src: 'plugin/markdown/marked.js' },
+            { src: 'plugin/markdown/markdown.js' },
+            { src: 'plugin/notes/notes.js', async: true },
+            { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+        ]
+    });
+</script>
+</body>
+</html>

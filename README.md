@@ -5,6 +5,8 @@
 
 [ Lessons learned from building graph models with Neo4j, Titan, and DSE](https://denisekgosnell.github.io/meetups/JanusGraphNYC/#/)
 
+[Career Pathways: Industry vs. Academia vs. Government](https://denisekgosnell.github.io/meetups/utk_march_2017/#/)
+
 ### 2016 Talks
 [Introduction to PokitDok](https://denisekgosnell.github.io/intro-to-pokitdok/cofc/#/)
 
