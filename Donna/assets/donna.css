@@ -1,0 +1,849 @@
+/* ============================================================
+   BUILD YOUR OWN DONNA · shared stylesheet
+   Palette: ink navy #14213D · charcoal #101820 · gold #C9A227
+            cream #F7F3E9 · Donna Red #A31621 (her voice only)
+   Type:    Playfair Display (display serif) · Inter (body)
+   ============================================================ */
+
+:root {
+  --ink: #14213D;
+  --charcoal: #101820;
+  --gold: #C9A227;
+  --gold-bright: #E7C766;
+  --cream: #F7F3E9;
+  --red: #A31621;
+  --text: #F4EFE1;
+  --muted: #CBC4AE;
+  --hairline: rgba(201, 162, 39, 0.38);
+  --paper-ink: #1C2333;
+  --serif: "Playfair Display", Georgia, "Times New Roman", serif;
+  --sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text);
+  background: linear-gradient(180deg, var(--ink) 0%, #0F1730 60%, var(--charcoal) 100%) var(--charcoal);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+a { color: var(--gold-bright); text-decoration: none; }
+a:hover, a:focus-visible { text-decoration: underline; text-underline-offset: 3px; }
+
+:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: var(--gold); color: var(--charcoal); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ---------- typography ---------- */
+
+h1, h2, h3 { font-family: var(--serif); color: var(--cream); font-weight: 600; }
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  margin: 0;
+}
+
+/* ---------- monogram + masthead ---------- */
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 26px 0 22px;
+}
+
+.masthead .brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--cream);
+}
+.masthead .brand:hover { text-decoration: none; }
+
+.masthead .brand .wordmark {
+  font-family: var(--serif);
+  font-size: 16px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  white-space: nowrap;
+}
+
+.monogram { display: block; flex: none; }
+
+.masthead .backlink {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.masthead .backlink:hover { color: var(--gold-bright); }
+
+/* ---------- epigraph: Donna's voice, red on cream ---------- */
+
+.epigraph {
+  background: var(--cream);
+  border-left: 3px solid var(--red);
+  border-radius: 3px;
+  padding: 26px 30px 22px;
+  margin: 8px 0 0;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+}
+
+.epigraph p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(20px, 3.4vw, 25px);
+  line-height: 1.45;
+  color: var(--red);
+}
+
+.epigraph cite {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+/* ---------- hero (front page) ---------- */
+
+.hero { padding: 30px 0 10px; text-align: center; }
+
+.hero .epigraph { text-align: left; margin-bottom: 44px; }
+
+.hero h1 {
+  font-size: clamp(40px, 9vw, 72px);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.08;
+}
+
+.hero .tagline {
+  margin-top: 18px;
+  font-size: clamp(18px, 2.8vw, 21px);
+  color: var(--text);
+}
+
+.hero .promise {
+  margin-top: 10px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: clamp(17px, 2.6vw, 20px);
+  color: var(--gold-bright);
+}
+
+.hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 34px 0 0;
+}
+.hero-rule::before, .hero-rule::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--hairline);
+}
+.hero-rule .diamond {
+  width: 7px; height: 7px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+/* ---------- sections ---------- */
+
+.section { padding: 44px 0 6px; }
+
+.section > .eyebrow { display: block; margin-bottom: 14px; }
+
+.lede { font-size: clamp(18px, 2.8vw, 21px); line-height: 1.7; }
+.lede strong { color: var(--cream); font-weight: 600; }
+
+/* ---------- logistics card ---------- */
+
+.logistics {
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 26px 28px;
+  background: rgba(247, 243, 233, 0.04);
+}
+
+.logistics .when {
+  font-family: var(--serif);
+  font-size: clamp(21px, 3.6vw, 26px);
+  color: var(--cream);
+}
+
+.logistics .where { margin-top: 8px; color: var(--text); }
+.logistics .host { margin-top: 8px; font-size: 16px; color: var(--muted); }
+
+/* ---------- gold checklist ---------- */
+
+.checklist { list-style: none; }
+
+.checklist li {
+  position: relative;
+  padding: 20px 0 20px 44px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.18);
+}
+.checklist li:last-child { border-bottom: 0; }
+
+.checklist li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 27px;
+  width: 11px; height: 11px;
+  border: 1.5px solid var(--gold);
+  transform: rotate(45deg);
+}
+
+.checklist strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--cream);
+  margin-bottom: 4px;
+}
+
+.checklist .fine { display: block; margin-top: 4px; font-size: 15.5px; font-style: italic; color: var(--muted); }
+
+/* ---------- agenda case-file cards ---------- */
+
+.cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 6px; }
+
+.case-card {
+  position: relative;
+  display: block;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 24px 24px 22px;
+  background: rgba(247, 243, 233, 0.03);
+  color: var(--text);
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.case-card:hover, .case-card:focus-visible {
+  text-decoration: none;
+  border-color: var(--gold);
+  background: rgba(247, 243, 233, 0.06);
+  transform: translateY(-2px);
+}
+
+.case-card .file-no {
+  display: block;
+  font-family: var(--serif);
+  font-size: 34px;
+  font-weight: 700;
+  color: rgba(231, 199, 102, 0.3);
+  -webkit-text-stroke: 1px var(--gold-bright);
+  line-height: 1;
+}
+
+.case-card .file-title {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--sans);
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cream);
+}
+
+.case-card .file-time {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--gold-bright);
+  border: 1px solid rgba(201, 162, 39, 0.35);
+  border-radius: 99px;
+  padding: 2px 10px;
+}
+
+.case-card .file-note {
+  display: block;
+  margin-top: 12px;
+  font-size: 16px;
+  font-style: italic;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.case-card .file-go {
+  position: absolute;
+  top: 22px; right: 22px;
+  color: var(--gold);
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+.case-card:hover .file-go { transform: translateX(3px); }
+
+/* ---------- case-file header (step pages) ---------- */
+
+.case-header { padding: 18px 0 8px; }
+
+.case-header .file-line {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.case-header .file-no {
+  font-family: var(--serif);
+  font-size: clamp(54px, 10vw, 84px);
+  font-weight: 700;
+  line-height: 1;
+  color: rgba(231, 199, 102, 0.25);
+  -webkit-text-stroke: 1.5px var(--gold-bright);
+}
+
+.case-header h1 {
+  font-size: clamp(30px, 6vw, 46px);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
+.case-header .file-meta {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+.case-header .epigraph { margin-top: 26px; }
+
+/* ---------- goal ---------- */
+
+.goal {
+  margin-top: 34px;
+  padding: 18px 22px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  background: rgba(247, 243, 233, 0.04);
+}
+.goal .eyebrow { display: block; margin-bottom: 6px; }
+.goal p { font-family: var(--serif); font-size: 20px; color: var(--cream); line-height: 1.5; }
+
+/* ---------- numbered steps ---------- */
+
+.steps { list-style: none; counter-reset: step; margin-top: 10px; }
+
+.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding: 26px 0 26px 58px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.16);
+}
+.steps > li:last-child { border-bottom: 0; }
+
+.steps > li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 26px;
+  font-family: var(--serif);
+  font-size: 24px;
+  font-weight: 700;
+  color: rgba(231, 199, 102, 0.3);
+  -webkit-text-stroke: 1px var(--gold-bright);
+  line-height: 1.3;
+}
+
+.steps h3 { font-size: 22px; margin-bottom: 8px; }
+.steps p { margin-bottom: 10px; }
+.steps p:last-child { margin-bottom: 0; }
+.steps .fine { font-size: 15.5px; color: var(--muted); font-style: italic; }
+
+.steps ul { margin: 8px 0 10px 20px; }
+.steps ul li { margin-bottom: 6px; }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+kbd.ui {
+  font-family: var(--sans);
+  font-size: 0.88em;
+  font-weight: 600;
+  color: var(--cream);
+  background: rgba(247, 243, 233, 0.09);
+  border: 1px solid rgba(247, 243, 233, 0.25);
+  border-radius: 4px;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+/* ---------- prompt blocks (cream paper + copy button) ---------- */
+
+.prompt {
+  background: var(--cream);
+  border-radius: 4px;
+  margin: 14px 0 6px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+}
+
+.prompt .prompt-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(20, 33, 61, 0.14);
+}
+
+.prompt .prompt-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(20, 33, 61, 0.85);
+}
+
+.copy-btn {
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--gold);
+  border-radius: 99px;
+  padding: 5px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.copy-btn:hover { background: var(--gold); color: var(--charcoal); }
+.copy-btn.copied { background: var(--gold); color: var(--charcoal); }
+
+.prompt pre {
+  padding: 18px 20px 20px;
+  font-family: var(--mono);
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: var(--paper-ink);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* ---------- Gmail / Outlook tab toggle ---------- */
+
+.tabs { margin: 16px 0 4px; }
+
+.tab-list {
+  display: inline-flex;
+  border: 1px solid var(--hairline);
+  border-radius: 99px;
+  padding: 3px;
+  gap: 3px;
+  background: rgba(16, 24, 32, 0.4);
+}
+
+.tab {
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 99px;
+  padding: 7px 22px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.tab:hover { color: var(--cream); }
+.tab[aria-selected="true"] { background: var(--gold); color: var(--charcoal); }
+
+.tab-panel { padding-top: 14px; }
+.tab-panel[hidden] { display: none; }
+
+/* ---------- checkpoint (gold) ---------- */
+
+.checkpoint {
+  margin: 38px 0 0;
+  border: 1.5px solid var(--gold);
+  border-radius: 4px;
+  padding: 22px 26px;
+  background: rgba(201, 162, 39, 0.07);
+}
+
+.checkpoint .eyebrow { display: block; margin-bottom: 8px; }
+.checkpoint .eyebrow::before { content: "✓  "; }
+
+.checkpoint p {
+  font-family: var(--serif);
+  font-size: 21px;
+  line-height: 1.5;
+  color: var(--cream);
+}
+
+/* ---------- confirmation box: "you should see" ---------- */
+
+.confirm {
+  position: relative;
+  margin: 12px 0 6px;
+  border: 1px dashed rgba(201, 162, 39, 0.5);
+  border-radius: 4px;
+  padding: 12px 18px 13px 46px;
+  background: rgba(201, 162, 39, 0.06);
+  font-size: 16px;
+  color: var(--text);
+}
+
+.confirm::before {
+  content: "✓";
+  position: absolute;
+  left: 18px;
+  top: 13px;
+  font-weight: 700;
+  color: var(--gold-bright);
+}
+
+.confirm .confirm-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  margin-bottom: 3px;
+}
+
+/* ---------- stop gate: hands off, we regroup ---------- */
+
+.stop {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 34px 0 0;
+  border: 1.5px solid var(--red);
+  border-radius: 4px;
+  padding: 18px 22px;
+  background: rgba(163, 22, 33, 0.14);
+}
+
+.stop .stop-sign {
+  flex: none;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  background: var(--red);
+  border-radius: 3px;
+  padding: 4px 10px;
+  margin-top: 2px;
+}
+
+.stop p { font-size: 16.5px; color: var(--text); }
+.stop p strong { color: var(--cream); }
+
+/* ---------- run sheet (front-page arc) ---------- */
+
+.runsheet { list-style: none; margin-top: 6px; }
+
+.runsheet li {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.18);
+}
+.runsheet li:last-child { border-bottom: 0; }
+
+.runsheet .rs-time {
+  flex: none;
+  width: 64px;
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--gold-bright);
+}
+
+.runsheet .rs-what { font-size: 16.5px; color: var(--text); }
+.runsheet .rs-what strong { color: var(--cream); font-weight: 600; }
+
+/* ---------- four-quadrant list (front page) ---------- */
+
+.quadlist { list-style: none; margin: 16px 0 4px; }
+
+.quadlist li {
+  position: relative;
+  padding: 12px 0 12px 104px;
+  border-bottom: 1px solid rgba(201, 162, 39, 0.18);
+  font-size: 16px;
+}
+.quadlist li:last-child { border-bottom: 0; }
+
+.quadlist strong {
+  position: absolute;
+  left: 0;
+  top: 12px;
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--gold-bright);
+}
+
+.quadlist .ql-do { display: block; color: var(--text); }
+.quadlist .ql-get { display: block; margin-top: 2px; color: var(--muted); font-style: italic; font-size: 15.5px; }
+
+.quadband {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 18px 0 14px;
+  padding-top: 10px;
+  border-top: 3px solid var(--gold);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+}
+
+@media (max-width: 640px) {
+  .quadlist li { padding-left: 0; padding-top: 14px; }
+  .quadlist strong { position: static; display: block; margin-bottom: 3px; }
+}
+
+/* ---------- red callout: Donna's voice, loud ---------- */
+
+.callout-red {
+  margin: 26px 0 6px;
+  background: var(--red);
+  border-radius: 4px;
+  padding: 24px 28px;
+  color: var(--cream);
+  box-shadow: 0 16px 40px rgba(163, 22, 33, 0.3);
+}
+
+.callout-red .callout-title {
+  font-family: var(--serif);
+  font-size: clamp(22px, 3.8vw, 27px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #FFFFFF;
+}
+
+.callout-red p { margin-top: 8px; font-size: 17px; color: #F7F3E9; }
+
+/* ---------- why it matters ---------- */
+
+.why {
+  margin: 26px 0 0;
+  padding-left: 20px;
+  border-left: 2px solid var(--hairline);
+  font-size: 16.5px;
+  color: var(--muted);
+}
+.why .why-label {
+  font-weight: 600;
+  font-style: normal;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 12.5px;
+  color: var(--gold-bright);
+  display: block;
+  margin-bottom: 4px;
+}
+.why em, .why { font-style: italic; }
+
+/* ---------- sidebar / aside ---------- */
+
+.aside {
+  margin: 26px 0 6px;
+  border: 1px solid var(--hairline);
+  border-radius: 4px;
+  padding: 20px 24px;
+  background: rgba(247, 243, 233, 0.04);
+  font-size: 16.5px;
+}
+.aside .eyebrow { display: block; margin-bottom: 8px; }
+.aside p { color: var(--text); }
+.aside p + p { margin-top: 8px; }
+
+/* ---------- collapsible small print ---------- */
+
+details.smallprint {
+  margin: 22px 0 6px;
+  border: 1px solid rgba(201, 162, 39, 0.22);
+  border-radius: 4px;
+  background: rgba(16, 24, 32, 0.35);
+}
+
+details.smallprint summary {
+  cursor: pointer;
+  padding: 14px 20px;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  list-style: none;
+}
+details.smallprint summary::-webkit-details-marker { display: none; }
+details.smallprint summary::before { content: "+  "; color: var(--gold); }
+details.smallprint[open] summary::before { content: "−  "; }
+details.smallprint summary:hover { color: var(--cream); }
+
+details.smallprint .smallprint-body { padding: 2px 20px 18px; font-size: 16px; color: var(--text); }
+details.smallprint .smallprint-body p + p { margin-top: 10px; }
+details.smallprint .smallprint-body ol { margin: 8px 0 8px 20px; }
+details.smallprint .smallprint-body ol li { margin-bottom: 6px; }
+
+/* ---------- prev / next nav ---------- */
+
+.stepnav {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 48px;
+  padding-top: 26px;
+  border-top: 1px solid var(--hairline);
+}
+
+.stepnav a {
+  display: block;
+  max-width: 46%;
+  color: var(--text);
+}
+.stepnav a:hover { text-decoration: none; }
+.stepnav a:hover .stepnav-title { color: var(--gold-bright); }
+
+.stepnav .stepnav-dir {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+.stepnav .stepnav-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--cream);
+  transition: color 0.15s ease;
+}
+
+.stepnav .next { margin-left: auto; text-align: right; }
+
+/* ---------- skyline divider ---------- */
+
+.skyline {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 46px 0 0;
+  opacity: 0.5;
+}
+
+/* ---------- footer ---------- */
+
+.footer { padding: 26px 0 56px; text-align: center; }
+
+.footer .footer-quote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 19px;
+  color: var(--red);
+  background: var(--cream);
+  display: inline-block;
+  border-radius: 3px;
+  padding: 10px 22px;
+}
+.footer .footer-quote cite {
+  font-family: var(--sans);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-left: 10px;
+}
+
+.footer .footer-contact { margin-top: 18px; font-size: 15px; color: var(--muted); }
+
+/* ---------- phone width ---------- */
+
+@media (max-width: 640px) {
+  body { font-size: 17px; }
+  .wrap { padding: 0 18px; }
+  .cases { grid-template-columns: 1fr; }
+  .masthead { padding: 20px 0 16px; gap: 10px; }
+  .masthead .brand { gap: 10px; }
+  .masthead .brand .wordmark {
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    white-space: normal;
+    line-height: 1.3;
+    max-width: 8.5em;
+  }
+  .masthead .backlink { font-size: 13px; letter-spacing: 0.05em; }
+  .epigraph { padding: 20px 22px 18px; }
+  .logistics { padding: 22px 20px; }
+  .steps > li { padding-left: 44px; }
+  .steps > li::before { font-size: 20px; top: 29px; }
+  .prompt pre { font-size: 14.5px; padding: 16px 16px 18px; }
+  .checkpoint { padding: 18px 20px; }
+  .callout-red { padding: 20px 22px; }
+  .stop { padding: 16px 18px; flex-direction: column; gap: 8px; }
+  .runsheet .rs-time { width: 56px; font-size: 17px; }
+  .stepnav a { max-width: 48%; }
+  .tab { padding: 7px 16px; }
+}
