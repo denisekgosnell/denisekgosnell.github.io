@@ -1,0 +1,362 @@
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("fonts/instrument-sans.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/instrument-serif-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("fonts/jetbrains-mono-bold.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: light;
+  --bg: #F8F5FB;
+  --grid: #ECE8F0;
+  --ink: #25162D;
+  --ink-soft: #433F47;
+  --muted: #766C7D;
+  --purple: #932EE9;
+  --purple-deep: #7A1CCB;
+  --line: #D6CCDE;
+  --error: #B3261E;
+  --sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --mono: "JetBrains Mono", Menlo, Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 56px 56px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 500px);
+  justify-content: center;
+  align-items: center;
+  gap: clamp(48px, 7vw, 112px);
+  min-height: 100vh;
+  padding: 56px 24px;
+}
+
+/* Cover */
+
+.cover {
+  margin: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow:
+    0 0 0 1px rgba(37, 22, 45, 0.06),
+    0 2px 4px rgba(37, 22, 45, 0.06),
+    0 28px 56px -16px rgba(37, 22, 45, 0.32);
+}
+
+.cover svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Copy */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 28px;
+  color: var(--purple);
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  content: "";
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--purple);
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.title-the {
+  display: block;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(34px, 3.4vw, 46px);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.title-main {
+  display: block;
+  font-size: clamp(42px, 5.4vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -0.005em;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.subtitle {
+  margin: 20px 0 0;
+  color: var(--ink-soft);
+  font-size: clamp(18px, 1.7vw, 21px);
+  line-height: 1.35;
+  letter-spacing: 0.03em;
+}
+
+.subtitle span {
+  display: block;
+}
+
+.authors {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 28px 0 0;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.leader {
+  flex: 1 1 32px;
+  height: 4px;
+  background-image: radial-gradient(circle, var(--muted) 1.3px, transparent 1.7px);
+  background-size: 8px 4px;
+  background-repeat: repeat-x;
+  background-position: left center;
+}
+
+/* Form */
+
+.signup,
+.success {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.signup-intro {
+  margin: 0 0 22px;
+  color: var(--ink-soft);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.field input {
+  display: block;
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 17px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field input:hover {
+  border-color: #BCAFC6;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 4px rgba(147, 46, 233, 0.16);
+}
+
+.field input[aria-invalid="true"] {
+  border-color: var(--error);
+}
+
+.field input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 4px rgba(179, 38, 30, 0.14);
+}
+
+.trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.submit {
+  display: block;
+  width: 100%;
+  height: 54px;
+  margin-top: 24px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--purple);
+  color: #fff;
+  font: inherit;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.05s ease;
+}
+
+.submit:hover {
+  background: var(--purple-deep);
+}
+
+.submit:active {
+  transform: translateY(1px);
+}
+
+.submit:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.submit:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.status {
+  margin: 14px 0 0;
+  font-size: 15px;
+}
+
+.status:empty {
+  display: none;
+}
+
+.status.is-error {
+  color: var(--error);
+}
+
+.fineprint {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+/* Success */
+
+.success-mark {
+  display: block;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+}
+
+.success-title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+}
+
+.success-title:focus {
+  outline: none;
+}
+
+.success-message {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  overflow-wrap: anywhere;
+}
+
+/* Small screens */
+
+@media (max-width: 880px) {
+  .page {
+    grid-template-columns: minmax(0, 520px);
+    align-items: start;
+    gap: 44px;
+    padding: 40px 20px 56px;
+  }
+
+  .cover {
+    width: min(62vw, 260px);
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .page {
+    padding-inline: 16px;
+  }
+
+  .authors {
+    font-size: 11.5px;
+    letter-spacing: 0.16em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}
