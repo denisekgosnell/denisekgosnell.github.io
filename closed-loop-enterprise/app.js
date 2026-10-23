@@ -14,7 +14,7 @@
     invalid_email: 'Please enter a valid email address.',
     busy: 'Lots of sign-ups right now. Please try again in a minute.',
     not_configured: 'Sign-ups open shortly. Please check back soon.',
-    failed: "Something went wrong and you're not on the list yet. Please try again."
+    failed: "Something went wrong and you're not on the waitlist yet. Please try again."
   };
 
   var form = document.getElementById('signup');

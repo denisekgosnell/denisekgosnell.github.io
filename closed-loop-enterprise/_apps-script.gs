@@ -1,12 +1,12 @@
 /**
- * Pre-order list backend for The Closed-Loop Enterprise sign-up page.
+ * Waitlist backend for The Closed-Loop Enterprise sign-up page.
  *
  * Writes each sign-up (timestamp, name, email) to the first tab of the
  * spreadsheet this script is attached to. The script runs as the sheet
  * owner, so the spreadsheet itself never needs to be shared with anyone.
  *
  * Setup (once):
- *   1. Open the pre-order Google Sheet > Extensions > Apps Script.
+ *   1. Open the waitlist Google Sheet > Extensions > Apps Script.
  *   2. Replace everything in Code.gs with this file and click Save.
  *   3. Deploy > New deployment > gear icon > Web app.
  *        Execute as: Me
@@ -51,7 +51,7 @@ function doPost(e) {
       sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
       sheet.setFrozenRows(1);
     }
-    // Same answer for new and repeat sign-ups, so the form never reveals who is on the list.
+    // Same answer for new and repeat sign-ups, so the form never reveals who is on the waitlist.
     if (!isOnList(sheet, email)) {
       sheet.appendRow([new Date(), asText(name), asText(email)]);
       SpreadsheetApp.flush();
