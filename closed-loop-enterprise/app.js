@@ -2,7 +2,7 @@
   'use strict';
 
   // Google Apps Script web app URL (ends in /exec). See _apps-script.gs for setup.
-  var ENDPOINT = '';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxWnrEeJ99jPN607SPx9W2u9VBs7jxvuQ7yVx72HWw8IxIS0DXVJuS12dVN2wfkEWxj6g/exec';
 
   var EMAIL_PATTERN = /^[A-Za-z0-9._%+'-]+@[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
   var MAX_NAME_LENGTH = 100;
